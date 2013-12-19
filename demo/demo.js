@@ -41,6 +41,21 @@ if (Meteor.isClient) {
 		}));
 	};
 
+	Template.demo.teams = function(){
+		return JSON.stringify([
+			{
+				name: 'nba-teams',
+				local: Nba.find().fetch().map(function(it){ return it.name; }),
+				header: '<h3 class="league-name">NBA Teams</h3>'
+			},
+			{
+				name: 'nhl-teams',
+				local: Nhl.find().fetch().map(function(it){ return it.name; }),
+				header: '<h3 class="league-name">NHL Teams</h3>'
+			}
+		]);
+	};
+
 	Template.demo.repos = function(){
 		return JSON.stringify(Repos.find().fetch());
 	};

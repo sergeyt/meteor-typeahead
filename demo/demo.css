@@ -1,0 +1,26 @@
+.example-twitter-oss .tt-suggestion {
+	padding: 8px 20px;
+}
+
+.example-twitter-oss .tt-suggestion + .tt-suggestion {
+	border-top: 1px solid #ccc;
+}
+
+.example-twitter-oss .repo-language {
+	float: right;
+	font-style: italic;
+}
+
+.example-twitter-oss .repo-name {
+	font-weight: bold;
+}
+
+.example-twitter-oss .repo-description {
+	font-size: 14px;
+}
+
+.example-sports .league-name {
+	margin: 0 20px 5px 20px;
+	padding: 3px 0;
+	border-bottom: 1px solid #ccc;
+}
