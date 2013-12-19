@@ -4,22 +4,32 @@
  */
 Meteor.typeahead = function(element){
 	var $e = $(element);
-	// TODO use input name, id as default value for dataset name
-	var name = $e.data('dataset') || 'dataset';
+	var name = $e.attr('name') || $e.attr('id') || 'dataset';
 	var limit = $e.data('limit') || 5;
-	var template = $e.data('template');
-	var local = $e.data('source');
+	var template = $e.data('template'); // specifies name of custom template
+	var data = $e.data('source');
 
 	var dataset = {
 		name: name,
 		limit: limit,
-		local: local
+		local: data
 	};
 
-// TODO support handlebars engine and custom templates
-//	if (template) {
-//		dataset.template = template;
-//	}
+	// support for custom templates
+	if (template && Template[template]) {
+		dataset.template = template;
+		// meet typeahead template engine API to be Hogan compatible
+		dataset.engine = {
+			compile: function(){
+				var tmpl = Template[template];
+				return {
+					render: function(context){
+						return tmpl(context);
+					}
+				};
+			}
+		};
+	}
 
 	$e.typeahead(dataset);
 

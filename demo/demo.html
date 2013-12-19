@@ -3,19 +3,55 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://raw.github.com/jharding/typeahead.js-bootstrap.css/master/typeahead.js-bootstrap.css"/>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+	<style>
+		.form-control {
+			width: 300pt;
+		}
+
+		.example-twitter-oss .tt-suggestion {
+			padding: 8px 20px;
+		}
+
+		.example-twitter-oss .tt-suggestion + .tt-suggestion {
+			border-top: 1px solid #ccc;
+		}
+
+		.example-twitter-oss .repo-language {
+			float: right;
+			font-style: italic;
+		}
+
+		.example-twitter-oss .repo-name {
+			font-weight: bold;
+		}
+
+		.example-twitter-oss .repo-description {
+			font-size: 14px;
+		}
+	</style>
 </head>
 
 <body>
-{{>app}}
+{{>demo}}
 </body>
 
-<template name="app">
+<template name="demo">
 	<div class="row">
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
 			<div class="form-group">
-				<input class="form-control typeahead" type="text" placeholder="nba teams" autocomplete="off" spellcheck="off" data-source="{{nba-teams}}"/>
+				<input class="form-control typeahead" name="team" type="text" placeholder="nba teams" autocomplete="off" spellcheck="off" data-source="{{nba}}"/>
+			</div>
+			<div class="form-group example-twitter-oss">
+				<input class="form-control typeahead" name="repo" type="text" placeholder="open source projects by Twitter" autocomplete="off" spellcheck="off" data-source="{{repos}}" data-template="repo"/>
 			</div>
 		</div>
 	</div>
+</template>
+
+<template name="repo">
+	<p class="repo-language">{{language}}</p>
+	<p class="repo-name">{{name}}</p>
+	<p class="repo-description">{{description}}</p>
 </template>

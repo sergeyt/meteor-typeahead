@@ -1,64 +1,51 @@
 Nba = new Meteor.Collection("nba");
+Nhl = new Meteor.Collection("nhl");
+Repos = new Meteor.Collection("repos");
 
 if (Meteor.isServer) {
 
-	Meteor.publish('nba', function() {
-		return Nba.find();
-	});
-
 	Meteor.startup(function() {
-		if (Nba.find().count() === 0) {
-			[
-				"Boston Celtics",
-				"Dallas Mavericks",
-				"Brooklyn Nets",
-				"Houston Rockets",
-				"New York Knicks",
-				"Memphis Grizzlies",
-				"Philadelphia 76ers",
-				"New Orleans Hornets",
-				"Toronto Raptors",
-				"San Antonio Spurs",
-				"Chicago Bulls",
-				"Denver Nuggets",
-				"Cleveland Cavaliers",
-				"Minnesota Timberwolves",
-				"Detroit Pistons",
-				"Portland Trail Blazers",
-				"Indiana Pacers",
-				"Oklahoma City Thunder",
-				"Milwaukee Bucks",
-				"Utah Jazz",
-				"Atlanta Hawks",
-				"Golden State Warriors",
-				"Charlotte Bobcats",
-				"Los Angeles Clippers",
-				"Miami Heat",
-				"Los Angeles Lakers",
-				"Orlando Magic",
-				"Phoenix Suns",
-				"Washington Wizards",
-				"Sacramento Kings"
-			].forEach(function(name){
-				Nba.insert({name: name});
-				console.log('inserted %s', name);
-			});
+
+		function fill(col, source, map){
+			if (col.find().count() === 0) {
+				JSON.parse(Assets.getText(source)).forEach(function(it){
+					col.insert(typeof map === 'function' ? map(it) : it);
+				});
+			}
 		}
+
+		fill(Nba, 'nba.json', function(name){ return {name: name}; });
+		fill(Nhl, 'nhl.json', function(name){ return {name: name}; });
+		fill(Repos, 'repos.json');
 	});
 }
 
 if (Meteor.isClient) {
 
-	var nbaHandle = Meteor.subscribe('nba', function() {
+	var handles = [];
+	['nba', 'nhl', 'repos'].forEach(function(name){
+		var handle = Meteor.subscribe(name, function() {
+		});
+		handles.push(handle);
 	});
 
-	Template.app['nba-teams'] = function(){
+	Template.demo.nba = function(){
 		return JSON.stringify(Nba.find().fetch().map(function(it){
 			return it.name;
 		}));
 	};
 
-	Template.app.rendered = function() {
+	Template.demo.nhl = function(){
+		return JSON.stringify(Nhl.find().fetch().map(function(it){
+			return it.name;
+		}));
+	};
+
+	Template.demo.repos = function(){
+		return JSON.stringify(Repos.find().fetch());
+	};
+
+	Template.demo.rendered = function() {
 		$(this.firstNode).find('.typeahead').each(function(){
 			Meteor.typeahead(this);
 		});
