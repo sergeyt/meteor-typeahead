@@ -1,9 +1,25 @@
+function fixstyles($e){
+	// fix to apply bootstrap form-control to tt-hint
+	// TODO support other classes if needed
+	if ($e.hasClass('form-control')){
+		$e.parent('.twitter-typeahead').find('.tt-hint').addClass('form-control');
+	}
+}
+
 /**
  * Activates typeahead behavior for given element.
  * @param element The DOM element to modify.
  */
 Meteor.typeahead = function(element){
 	var $e = $(element);
+
+	var datasets = $e.data('sets');
+	if (datasets){
+		$e.typeahead(datasets);
+		fixstyles($e);
+		return;
+	}
+
 	var name = $e.attr('name') || $e.attr('id') || 'dataset';
 	var limit = $e.data('limit') || 5;
 	var template = $e.data('template'); // specifies name of custom template
@@ -32,10 +48,5 @@ Meteor.typeahead = function(element){
 	}
 
 	$e.typeahead(dataset);
-
-	// fix to apply bootstrap form-control to tt-hint
-	// TODO support other classes if needed
-	if ($e.hasClass('form-control')){
-		$e.parent('.twitter-typeahead').find('.tt-hint').addClass('form-control');
-	}
+	fixstyles($e);
 };
