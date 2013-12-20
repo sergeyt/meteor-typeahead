@@ -7,16 +7,23 @@ if (Meteor.isServer) {
 	Meteor.startup(function() {
 
 		function fill(col, source, map){
-			if (col.find().count() === 0) {
-				JSON.parse(Assets.getText(source)).forEach(function(it){
-					col.insert(typeof map === 'function' ? map(it) : it);
-				});
-			}
+			col.remove({});
+			JSON.parse(Assets.getText(source)).forEach(function(it){
+				col.insert(typeof map === 'function' ? map(it) : it);
+			});
 		}
 
 		fill(Nba, 'nba.json', function(name){ return {name: name}; });
 		fill(Nhl, 'nhl.json', function(name){ return {name: name}; });
 		fill(Repos, 'repos.json');
+	});
+
+	Meteor.methods({
+		emails: function(){
+			return [
+					'stodyshev@gmail.com'
+			];
+		}
 	});
 }
 
@@ -58,6 +65,13 @@ if (Meteor.isClient) {
 
 	Template.demo.repos = function(){
 		return JSON.stringify(Repos.find().fetch());
+	};
+
+	Template.demo.emails = function(){
+		Meteor.call('emails', function(err, res){
+			Session.set('emails', res);
+		});
+		return JSON.stringify(Session.get('emails') || []);
 	};
 
 	Template.demo.rendered = function() {

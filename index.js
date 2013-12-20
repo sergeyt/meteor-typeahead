@@ -1,23 +1,25 @@
-function fixstyles($e){
-	// fix to apply bootstrap form-control to tt-hint
-	// TODO support other classes if needed
-	if ($e.hasClass('form-control')){
-		$e.parent('.twitter-typeahead').find('.tt-hint').addClass('form-control');
-	}
-}
-
 /**
  * Activates typeahead behavior for given element.
  * @param element The DOM element to modify.
  */
-Meteor.typeahead = function(element){
+Meteor.typeahead = function(element) {
 	var $e = $(element);
+	var datasets = resolveDataSets($e);
 
+	$e.typeahead('destroy');
+	$e.typeahead(datasets);
+
+	// fix to apply bootstrap form-control to tt-hint
+	// TODO support other classes if needed
+	if ($e.hasClass('form-control')) {
+		$e.parent('.twitter-typeahead').find('.tt-hint').addClass('form-control');
+	}
+};
+
+function resolveDataSets($e) {
 	var datasets = $e.data('sets');
-	if (datasets){
-		$e.typeahead(datasets);
-		fixstyles($e);
-		return;
+	if (datasets) {
+		return datasets;
 	}
 
 	var name = $e.attr('name') || $e.attr('id') || 'dataset';
@@ -36,10 +38,10 @@ Meteor.typeahead = function(element){
 		dataset.template = template;
 		// meet typeahead template engine API to be Hogan compatible
 		dataset.engine = {
-			compile: function(){
+			compile: function() {
 				var tmpl = Template[template];
 				return {
-					render: function(context){
+					render: function(context) {
 						return tmpl(context);
 					}
 				};
@@ -47,6 +49,5 @@ Meteor.typeahead = function(element){
 		};
 	}
 
-	$e.typeahead(dataset);
-	fixstyles($e);
-};
+	return [dataset];
+}
