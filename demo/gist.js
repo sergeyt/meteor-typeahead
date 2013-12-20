@@ -13,40 +13,43 @@ if (Meteor.isClient){
 	// reactive data source
 	Meteor.Gist = {
 		get: function(user, id){
+
+			function evalGist(js){
+				/* jshint -W061 */
+
+				var src = "";
+				var document = {
+					write: function(html){
+						src += html;
+					}
+				};
+
+				try {
+					eval(js);
+				} catch (err) {
+					console.log(err);
+				}
+
+				return src;
+			}
+
 			var key = 'gist-' + id;
-			var val = Session.get(key);
+
 			Meteor.call('gist', user, id, function(err,res){
 				if (err){
-					throw err;
+					console.log(err);
+					return;
 				}
-				if (val != res.content){
-					Session.set(key, res.content);
+				if (Session.get(key) != res.content){
+					Session.set(key, evalGist(res.content));
 				}
 			});
-			return val;
+
+			return Session.get(key);
 		}
 	};
 
-	function evalGist(js){
-		var src = "";
-		var document = {
-			write: function(html){
-				src += html;
-			}
-		};
-
-		eval(js);
-
-		return src;
-	}
-
 	Handlebars.registerHelper('gist', function(user, id){
-		try {
-			var js = Meteor.Gist.get(user, id);
-			return js ? evalGist(js) : '';
-		} catch (err) {
-			console.log(err);
-		}
-		return '';
+		return Meteor.Gist.get(user, id);
 	});
 }
