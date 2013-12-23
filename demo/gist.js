@@ -40,8 +40,9 @@ if (Meteor.isClient){
 					console.log(err);
 					return;
 				}
-				if (Session.get(key) != res.content){
-					Session.set(key, evalGist(res.content));
+				if (!Session.get(key)){
+					var content = evalGist(res.content);
+					Session.set(key, content);
 				}
 			});
 
