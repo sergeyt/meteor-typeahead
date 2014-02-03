@@ -36,47 +36,60 @@ if (Meteor.isClient) {
 		handles.push(handle);
 	});
 
-	Template.demo.nba = function(){
-		return JSON.stringify(Nba.find().fetch().map(function(it){
-			return it.name;
-		}));
+	function init() {
+		Meteor.typeahead(this.find('.typeahead'));
 	};
 
-	Template.demo.nhl = function(){
-		return JSON.stringify(Nhl.find().fetch().map(function(it){
-			return it.name;
-		}));
+	var nba = function(){
+		return Nba.find().fetch().map(function(it){ return it.name; });
+	};
+	var nhl = function(){
+		return Nhl.find().fetch().map(function(it){ return it.name; });
 	};
 
-	Template.demo.teams = function(){
+	Template.example1.nba = function(){
+		return JSON.stringify(nba());
+	};
+	Template.example1.rendered = init;
+
+	Template.example2.teams = function(){
 		return JSON.stringify([
 			{
 				name: 'nba-teams',
-				local: Nba.find().fetch().map(function(it){ return it.name; }),
+				local: nba(),
 				header: '<h3 class="league-name">NBA Teams</h3>'
 			},
 			{
 				name: 'nhl-teams',
-				local: Nhl.find().fetch().map(function(it){ return it.name; }),
+				local: nhl(),
 				header: '<h3 class="league-name">NHL Teams</h3>'
 			}
 		]);
 	};
+	Template.example2.rendered = init;
 
-	Template.demo.repos = function(){
+	Template.example3.repos = function(){
 		return JSON.stringify(Repos.find().fetch());
 	};
+	Template.example3.rendered = init;
 
-	Template.demo.emails = function(){
+	var emails = function(query, callback){
 		Meteor.call('emails', function(err, res){
-			Session.set('emails', res);
+			callback(res.map(function(v){ return {value: v}; }));
 		});
-		return JSON.stringify(Session.get('emails') || []);
 	};
 
-	Template.demo.rendered = function() {
-		$(this.firstNode).find('.typeahead').each(function(){
-			Meteor.typeahead(this);
-		});
+	Template.example4.rendered = function(){
+		Meteor.typeahead(this.find('.typeahead'), emails);
+	};
+
+	var feed = function(query, callback){
+		// TODO do remote query here
+		var set = ['!', '!!', '!!!'].map(function(a){ return {value: query + a}; });
+		callback(set);
+    };
+
+	Template.example5.rendered = function(){
+		Meteor.typeahead(this.find('.typeahead'), feed);
 	};
 }
