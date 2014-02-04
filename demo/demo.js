@@ -36,10 +36,6 @@ if (Meteor.isClient) {
 		handles.push(handle);
 	});
 
-	function init() {
-		Meteor.typeahead(this.find('.typeahead'));
-	};
-
 	var nba = function(){
 		return Nba.find().fetch().map(function(it){ return it.name; });
 	};
@@ -50,7 +46,9 @@ if (Meteor.isClient) {
 	Template.example1.nba = function(){
 		return JSON.stringify(nba());
 	};
-	Template.example1.rendered = init;
+	Template.example1.rendered = function() {
+		Meteor.typeahead(this.find('.typeahead'));
+	};
 
 	Template.example2.teams = function(){
 		return JSON.stringify([
@@ -66,12 +64,16 @@ if (Meteor.isClient) {
 			}
 		]);
 	};
-	Template.example2.rendered = init;
+	Template.example2.rendered = function() {
+		Meteor.typeahead(this.find('.typeahead'));
+	};
 
 	Template.example3.repos = function(){
 		return JSON.stringify(Repos.find().fetch());
 	};
-	Template.example3.rendered = init;
+	Template.example3.rendered = function() {
+		Meteor.typeahead(this.find('.typeahead'));
+	};
 
 	var emails = function(query, callback){
 		Meteor.call('emails', function(err, res){
