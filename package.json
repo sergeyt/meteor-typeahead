@@ -1,6 +1,6 @@
 {
   "name": "meteor-typeahead",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Autocomplete package for meteor powered by twitter typeahead.js",
   "license": "MIT",
   "main": "index.js",
