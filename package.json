@@ -15,7 +15,8 @@
   ],
   "author": "Sergey Todyshev <stodyshev@gmail.com>",
   "contributors": [
-    "Sergey Todyshev <stodyshev@gmail.com>"
+    "Sergey Todyshev <stodyshev@gmail.com>",
+    "grigio <grigio.org@gmail.com>"
   ],
   "dependencies": {},
   "devDependencies": {
