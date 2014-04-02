@@ -1,9 +1,6 @@
 {
   "packages":
   {
-	  "typeahead":
-	  {
-		  "path": ".."
-	  }
+	  "typeahead":{"path": ".."}
   }
 }
