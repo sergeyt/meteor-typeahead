@@ -3,9 +3,9 @@
  * @param element The DOM element to modify.
  * @param source The custom data source.
  */
-Meteor.typeahead = function(element, source) {
+Meteor.typeahead = function(element, source, template) {
 	var $e = $(element);
-	var datasets = resolve_datasets($e, source);
+	var datasets = resolve_datasets($e, source, template);
 
 	$e.typeahead('destroy');
 
@@ -22,9 +22,42 @@ Meteor.typeahead = function(element, source) {
 	}
 };
 
-function resolve_datasets($e, source) {
+/**
+ * Activates all typeahead elements.
+ * @param selector (optional) selector for typeahead elements
+ */
+Meteor.typeahead.inject = function(selector){
+	if (!selector) {
+		selector = '.typeahead';
+	}
+
+	Object.keys(Template).forEach(function(key){
+		wrap_rendered_callback(Template[key], selector);
+	});
+};
+
+function wrap_rendered_callback(template, selector) {
+	var renderedCallback = template.rendered;
+	template.rendered = function() {
+		var self = this;
+		var e = $(self.find(selector));
+		if (e.length) {
+			Meteor.typeahead(e[0], null, self);
+		} else {
+			template.rendered = renderedCallback;
+		}
+		if (renderedCallback) {
+			renderedCallback.call(self);
+		}
+	};
+}
+
+function resolve_datasets($e, source, template) {
 	var datasets = $e.data('sets');
 	if (datasets) {
+		if (typeof datasets == 'string') {
+			datasets = resolve_source(template, datasets);
+		}
 		return datasets.map(function(ds) {
 			return wrap(ds);
 		});
@@ -32,11 +65,15 @@ function resolve_datasets($e, source) {
 
 	var name = $e.attr('name') || $e.attr('id') || 'dataset';
 	var limit = $e.data('limit');
-	var template = $e.data('template'); // specifies name of custom template
+	var templateName = $e.data('template'); // specifies name of custom template
 	var displayKey = $e.data('display-key');
 
 	if (!source) {
 		source = $e.data('source') || [];
+	}
+
+	if (typeof source === 'string') {
+		source = resolve_source(template, source);
 	}
 
 	var dataset = {
@@ -55,7 +92,7 @@ function resolve_datasets($e, source) {
 	}
 
 	// support for custom templates
-	setup_template(dataset, template);
+	setup_template(dataset, templateName);
 
 	if (Array.isArray(dataset.local)) {
 		return wrap(dataset);
@@ -64,11 +101,31 @@ function resolve_datasets($e, source) {
 	return dataset;
 }
 
+function resolve_source(template, name) {
+	if (!template || !template.__component__) {
+		return [];
+	}
+	var fn = template.__component__[name];
+	if (typeof fn != 'function') {
+		console.log("Unable to resolve data source function '%s'.", name);
+		return [];
+	}
+	if (fn.length == 0) {
+		// TODO make reactive, e.g. return as reactive function
+		return fn();
+	}
+	// TODO wrap function(query, callback) to check signature
+	return fn;
+}
+
 function setup_template(dataset, template) {
 	if (!template) return;
 	var tmpl = Template[template];
 	dataset.template = function(context) {
-		return tmpl(context);
+		var div = $("<div/>");
+		var range = UI.renderWithData(tmpl, context);
+		UI.insert(range, div[0]);
+		return div.html();
 	};
 }
 

@@ -44,14 +44,11 @@ if (Meteor.isClient) {
 	};
 
 	Template.example1.nba = function(){
-		return JSON.stringify(nba());
-	};
-	Template.example1.rendered = function() {
-		Meteor.typeahead(this.find('.typeahead'));
+		return nba();
 	};
 
 	Template.example2.teams = function(){
-		return JSON.stringify([
+		return [
 			{
 				name: 'nba-teams',
 				local: nba(),
@@ -62,36 +59,25 @@ if (Meteor.isClient) {
 				local: nhl(),
 				header: '<h3 class="league-name">NHL Teams</h3>'
 			}
-		]);
-	};
-	Template.example2.rendered = function() {
-		Meteor.typeahead(this.find('.typeahead'));
+		];
 	};
 
 	Template.example3.repos = function(){
-		return JSON.stringify(Repos.find().fetch());
-	};
-	Template.example3.rendered = function() {
-		Meteor.typeahead(this.find('.typeahead'));
+		return Repos.find().fetch();
 	};
 
-	var emails = function(query, callback){
+	Template.example4.emails = function(query, callback) {
 		Meteor.call('emails', function(err, res){
 			callback(res.map(function(v){ return {value: v}; }));
 		});
 	};
 
-	Template.example4.rendered = function(){
-		Meteor.typeahead(this.find('.typeahead'), emails);
-	};
-
-	var feed = function(query, callback){
+	Template.example5.feed = function(query, callback){
 		// TODO do remote query here
 		var set = ['!', '!!', '!!!'].map(function(a){ return {value: query + a}; });
 		callback(set);
     };
 
-	Template.example5.rendered = function(){
-		Meteor.typeahead(this.find('.typeahead'), feed);
-	};
+	// initializes all typeahead instances
+	Meteor.typeahead.inject();
 }
