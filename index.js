@@ -110,7 +110,7 @@ function resolve_source(template, name) {
 		console.log("Unable to resolve data source function '%s'.", name);
 		return [];
 	}
-	if (fn.length == 0) {
+	if (fn.length === 0) {
 		// TODO make reactive, e.g. return as reactive function
 		return fn();
 	}
