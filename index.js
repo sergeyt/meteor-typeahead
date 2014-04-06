@@ -81,6 +81,7 @@ function resolve_datasets($e, source) {
 	}
 
 	dataset.source = source;
+	dataset.templates = setup_templates(dataset);
 
 	return dataset;
 }
@@ -109,6 +110,17 @@ function setup_template(dataset, template) {
 	};
 }
 
+function setup_templates(dataset) {
+	var templates = {};
+	if (dataset.header) {
+		templates.header = dataset.header;
+	}
+	if (dataset.template) {
+		templates.suggestion = dataset.template;
+	}
+	return templates;
+}
+
 // creates Bloodhound suggestion engine based on given dataset
 function make_bloodhound(dataset) {
 
@@ -133,15 +145,6 @@ function make_bloodhound(dataset) {
 		queryTokenizer: Bloodhound.tokenizers.whitespace
 	});
 
-	var templates = {};
-
-	if (dataset.header) {
-		templates.header = dataset.header;
-	}
-	if (dataset.template) {
-		templates.suggestion = dataset.template;
-	}
-
 	var engine = new Bloodhound(options);
 	engine.initialize();
 
@@ -161,6 +164,6 @@ function make_bloodhound(dataset) {
 			var fn = engine.ttAdapter();
 			return fn(query, cb);
 		},
-		templates: templates
+		templates: setup_templates(dataset)
 	};
 }
