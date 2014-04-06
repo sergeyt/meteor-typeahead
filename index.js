@@ -3,9 +3,9 @@
  * @param element The DOM element to modify.
  * @param source The custom data source.
  */
-Meteor.typeahead = function(element, source, template) {
+Meteor.typeahead = function(element, source) {
 	var $e = $(element);
-	var datasets = resolve_datasets($e, source, template);
+	var datasets = resolve_datasets($e, source);
 
 	$e.typeahead('destroy');
 
@@ -40,9 +40,9 @@ function wrap_rendered_callback(template, selector) {
 	var renderedCallback = template.rendered;
 	template.rendered = function() {
 		var self = this;
-		var e = $(self.find(selector));
-		if (e.length) {
-			Meteor.typeahead(e[0], null, self);
+		var $e = $(self.find(selector));
+		if ($e.length) {
+			Meteor.typeahead($e[0]);
 		} else {
 			template.rendered = renderedCallback;
 		}
@@ -52,14 +52,18 @@ function wrap_rendered_callback(template, selector) {
 	};
 }
 
-function resolve_datasets($e, source, template) {
+function resolve_datasets($e, source) {
+	var element = $e[0];
 	var datasets = $e.data('sets');
 	if (datasets) {
 		if (typeof datasets == 'string') {
-			datasets = resolve_source(template, datasets);
+			datasets = resolve_source(element, datasets);
+		}
+		if (typeof datasets == 'function') {
+			datasets = datasets() || [];
 		}
 		return datasets.map(function(ds) {
-			return wrap(ds);
+			return make_bloodhound(ds);
 		});
 	}
 
@@ -73,7 +77,7 @@ function resolve_datasets($e, source, template) {
 	}
 
 	if (typeof source === 'string') {
-		source = resolve_source(template, source);
+		source = resolve_source(element, source);
 	}
 
 	var dataset = {
@@ -85,36 +89,29 @@ function resolve_datasets($e, source, template) {
 		dataset.limit = limit;
 	}
 
-	if (typeof source == 'function') {
-		dataset.source = source;
-	} else {
-		dataset.local = source;
-	}
-
 	// support for custom templates
 	setup_template(dataset, templateName);
 
-	if (Array.isArray(dataset.local)) {
-		return wrap(dataset);
+	if (Array.isArray(source) || (typeof source == 'function' && source.length === 0)) {
+		dataset.local = source;
+		return make_bloodhound(dataset);
 	}
+
+	dataset.source = source;
 
 	return dataset;
 }
 
-function resolve_source(template, name) {
-	if (!template || !template.__component__) {
+function resolve_source(element, name) {
+	var component = UI.DomRange.getContainingComponent(element);
+	if (!component) {
 		return [];
 	}
-	var fn = template.__component__[name];
+	var fn = component[name];
 	if (typeof fn != 'function') {
 		console.log("Unable to resolve data source function '%s'.", name);
 		return [];
 	}
-	if (fn.length === 0) {
-		// TODO make reactive, e.g. return as reactive function
-		return fn();
-	}
-	// TODO wrap function(query, callback) to check signature
 	return fn;
 }
 
@@ -130,23 +127,21 @@ function setup_template(dataset, template) {
 }
 
 // creates Bloodhound suggestion engine based on given dataset
-function wrap(dataset) {
+function make_bloodhound(dataset) {
 
-	var key = dataset.displayKey;
-	if (!key && !dataset.template) {
-		dataset.local = dataset.local.map(function(value) {
-			if (typeof value == 'object') {
-				if (!key) {
-					key = Object.keys(value)[0];
-				}
-				return value;
-			}
-			return {value: value};
-		});
+	function wrap_value(value) {
+		return {value: value};
 	}
 
-	if (!key) {
-		key = 'value';
+	if (!dataset.template) {
+		if (Array.isArray(dataset.local)) {
+			dataset.local = dataset.local.map(wrap_value);
+		} else {
+			var localFn = dataset.local;
+			dataset.local = function(){
+				return (localFn() || []).map(wrap_value);
+			};
+		}
 	}
 
 	var options = $.extend({}, dataset, {
@@ -165,12 +160,24 @@ function wrap(dataset) {
 	}
 
 	var engine = new Bloodhound(options);
-
 	engine.initialize();
 
+	if (typeof dataset.local == 'function') {
+		// update data source on changing deps of local function
+		// TODO find better (functional) way to do that
+		Deps.autorun(function(){
+			options.local = dataset.local();
+			engine = new Bloodhound(options);
+			engine.initialize();
+		});
+	}
+
 	return {
-		displayKey: key,
-		source: engine.ttAdapter(),
+		displayKey: 'value',
+		source: function(query, cb) {
+			var fn = engine.ttAdapter();
+			return fn(query, cb);
+		},
 		templates: templates
 	};
 }

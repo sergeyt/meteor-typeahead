@@ -36,12 +36,12 @@ if (Meteor.isClient) {
 		handles.push(handle);
 	});
 
-	var nba = function(){
+	function nba(){
 		return Nba.find().fetch().map(function(it){ return it.name; });
-	};
-	var nhl = function(){
+	}
+	function nhl(){
 		return Nhl.find().fetch().map(function(it){ return it.name; });
-	};
+	}
 
 	Template.example1.nba = function(){
 		return nba();
@@ -51,12 +51,12 @@ if (Meteor.isClient) {
 		return [
 			{
 				name: 'nba-teams',
-				local: nba(),
+				local: nba,
 				header: '<h3 class="league-name">NBA Teams</h3>'
 			},
 			{
 				name: 'nhl-teams',
-				local: nhl(),
+				local: nhl,
 				header: '<h3 class="league-name">NHL Teams</h3>'
 			}
 		];
