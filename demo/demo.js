@@ -78,6 +78,8 @@ if (Meteor.isClient) {
 		callback(set);
     };
 
-	// initializes all typeahead instances
-	Meteor.typeahead.inject();
+	Meteor.startup(function(){
+		// initializes all typeahead instances
+		Meteor.typeahead.inject();
+	});
 }

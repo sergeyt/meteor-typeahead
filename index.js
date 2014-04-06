@@ -24,33 +24,16 @@ Meteor.typeahead = function(element, source) {
 
 /**
  * Activates all typeahead elements.
- * @param selector (optional) selector for typeahead elements
+ * @param selector (optional) selector to find typeahead elements to be activated
  */
-Meteor.typeahead.inject = function(selector){
+Meteor.typeahead.inject = function(selector) {
 	if (!selector) {
 		selector = '.typeahead';
 	}
-
-	Object.keys(Template).forEach(function(key){
-		wrap_rendered_callback(Template[key], selector);
+	$(selector).each(function(i,e){
+		Meteor.typeahead(e);
 	});
 };
-
-function wrap_rendered_callback(template, selector) {
-	var renderedCallback = template.rendered;
-	template.rendered = function() {
-		var self = this;
-		var $e = $(self.find(selector));
-		if ($e.length) {
-			Meteor.typeahead($e[0]);
-		} else {
-			template.rendered = renderedCallback;
-		}
-		if (renderedCallback) {
-			renderedCallback.call(self);
-		}
-	};
-}
 
 function resolve_datasets($e, source) {
 	var element = $e[0];
