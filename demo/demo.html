@@ -29,6 +29,7 @@
 			{{>example3}}
 			{{>example4}}
 			{{>example5}}
+			{{>example6}}
 		</div>
 	</div>
 </template>
@@ -112,6 +113,17 @@
 			<input class="form-control typeahead" name="feed" type="text" placeholder="Type to query data feed"
 				   autocomplete="off" spellcheck="off"
 					data-source="feed"/>
+		</div>
+	</div>
+</template>
+
+<template name="example6">
+	<div>
+		<h2>Server side search</h2>
+		<div class="form-group">
+			<input class="form-control typeahead" name="search" type="text" placeholder="Type to query"
+				   autocomplete="off" spellcheck="off"
+				   data-source="search"/>
 		</div>
 	</div>
 </template>
