@@ -36,12 +36,12 @@ if (Meteor.isClient) {
 		handles.push(handle);
 	});
 
-	function nba(){
+	var nba = function(){
 		return Nba.find().fetch().map(function(it){ return it.name; });
-	}
-	function nhl(){
+	};
+	var nhl = function(){
 		return Nhl.find().fetch().map(function(it){ return it.name; });
-	}
+	};
 
 	Template.example1.nba = function(){
 		return nba();
