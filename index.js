@@ -30,8 +30,12 @@ Meteor.typeahead.inject = function(selector) {
 	if (!selector) {
 		selector = '.typeahead';
 	}
-	$(selector).each(function(i,e){
-		Meteor.typeahead(e);
+	$(selector).each(function(i,e) {
+		try {
+			Meteor.typeahead(e);
+		} catch (err) {
+			console.log(err);
+		}
 	});
 };
 
@@ -131,39 +135,47 @@ function make_bloodhound(dataset) {
 	if (!dataset.template) {
 		if (Array.isArray(dataset.local)) {
 			dataset.local = dataset.local.map(wrap_value);
-		} else {
+		} else if (typeof dataset.local == 'function' && dataset.local.length === 0) {
 			var localFn = dataset.local;
-			dataset.local = function(){
+			dataset.local = function() {
 				return (localFn() || []).map(wrap_value);
 			};
 		}
 	}
 
-	var options = $.extend({}, dataset, {
-		// TODO support custom tokenizers
-		datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.value); },
-		queryTokenizer: Bloodhound.tokenizers.whitespace
-	});
+	var need_bloodhound = Array.isArray(dataset.local) ||
+		typeof dataset.local == 'function' && dataset.local.length === 0;
 
-	var engine = new Bloodhound(options);
-	engine.initialize();
+	var engine;
 
-	if (typeof dataset.local == 'function') {
-		// update data source on changing deps of local function
-		// TODO find better (functional) way to do that
-		Deps.autorun(function(){
-			options.local = dataset.local();
-			engine = new Bloodhound(options);
-			engine.initialize();
+	if (need_bloodhound) {
+		var options = $.extend({}, dataset, {
+			// TODO support custom tokenizers
+			datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.value); },
+			queryTokenizer: Bloodhound.tokenizers.whitespace
 		});
+
+		engine = new Bloodhound(options);
+		engine.initialize();
+
+		if (typeof dataset.local == 'function' && dataset.local.length === 0) {
+			// update data source on changing deps of local function
+			// TODO find better (functional) way to do that
+			Deps.autorun(function() {
+				engine = new Bloodhound(options);
+				engine.initialize();
+			});
+		}
+	}
+
+	function bloodhound_source(query, cb) {
+		var fn = engine.ttAdapter();
+		return fn(query, cb);
 	}
 
 	return {
 		displayKey: 'value',
-		source: function(query, cb) {
-			var fn = engine.ttAdapter();
-			return fn(query, cb);
-		},
+		source: need_bloodhound ? bloodhound_source : dataset.local,
 		templates: setup_templates(dataset)
 	};
 }
