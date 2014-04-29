@@ -5,13 +5,30 @@
 [![DevDeps Status](https://david-dm.org/sergeyt/meteor-typeahead/dev-status.png)](https://david-dm.org/sergeyt/meteor-typeahead#info=devDependencies)
 
 [![NPM version](https://badge.fury.io/js/meteor-typeahead.png)](http://badge.fury.io/js/meteor-typeahead)
-[![meteor package version](http://img.shields.io/badge/atmosphere-0.0.7-brightgreen.svg)](https://atmospherejs.com/package/typeahead)
+[![meteor package version](http://img.shields.io/badge/atmosphere-0.0.8-brightgreen.svg)](https://atmospherejs.com/package/typeahead)
 
 [![NPM](https://nodei.co/npm/meteor-typeahead.png?downloads=true&stars=true)](https://nodei.co/npm/meteor-typeahead/)
 
 # meteor-typeahead
 
 Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor
+
+## API
+
+```javascript
+/**
+ * Activates typeahead behavior for given input DOM element.
+ * @param element (required) The DOM element to infect.
+ * @param source (optional) The custom data source.
+ */
+Meteor.typeahead(element, source);
+
+/**
+ * Activates all typeahead elements.
+ * @param selector (optional) CSS selector to find typeahead elements to be activated.
+ */
+Meteor.typeahead.inject(selector);
+```
 
 ## Examples
 

@@ -1,7 +1,7 @@
 /**
  * Activates typeahead behavior for given element.
- * @param element The DOM element to modify.
- * @param source The custom data source.
+ * @param element (required) The DOM element to infect.
+ * @param source (optional) The custom data source.
  */
 Meteor.typeahead = function(element, source) {
 	var $e = $(element);
