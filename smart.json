@@ -3,6 +3,6 @@
   "description": "Autocomplete package for meteor powered by twitter typeahead.js",
   "homepage": "https://github.com/sergeyt/meteor-typeahead",
   "author": "Sergey Todyshev",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "git": "https://github.com/sergeyt/meteor-typeahead.git"
 }
