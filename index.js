@@ -129,8 +129,8 @@ function make_templates(dataset) {
 		templates.header = dataset.header;
 	}
 	if (dataset.template) {
-		var templateFn = typeof dataset.template == 'string'
-			? make_template_function(dataset.template)
+		var templateFn = typeof dataset.template == 'string' ?
+			make_template_function(dataset.template)
 			: dataset.template;
 		if (typeof templateFn == 'function') {
 			templates.suggestion = templateFn;
