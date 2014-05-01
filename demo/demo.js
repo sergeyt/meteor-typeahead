@@ -95,27 +95,35 @@ if (Meteor.isClient) {
 		return [
 			{
 				name: 'nba-teams',
-				local: nba,
-				header: '<h3 class="league-name">NBA Teams</h3>'
+				valueKey: 'name',
+				local: function() {
+					return Nba.find().fetch();
+				},
+				header: '<h3 class="league-name">NBA Teams</h3>',
+				template: 'team'
 			},
 			{
 				name: 'nhl-teams',
-				local: nhl,
-				header: '<h3 class="league-name">NHL Teams</h3>'
+				valueKey: 'name',
+				local: function(){
+					return Nhl.find().fetch();
+				},
+				header: '<h3 class="league-name">NHL Teams</h3>',
+				template: 'team'
 			},
-			{
-				name: 'other',
-				header: '<h3 class="league-name">Other</h3>',
-				local: function(query, callback) {
-					Meteor.call('search', query, {}, function(err, res) {
-						if (err) {
-							console.log(err);
-							return;
-						}
-						callback(res.map(function(v){ return {value: v.name}; }));
-					});
-				}
-			}
+//			{
+//				name: 'other',
+//				header: '<h3 class="league-name">Other</h3>',
+//				local: function(query, callback) {
+//					Meteor.call('search', query, {}, function(err, res) {
+//						if (err) {
+//							console.log(err);
+//							return;
+//						}
+//						callback(res.map(function(v){ return {value: v.name}; }));
+//					});
+//				}
+//			}
 		];
 	};
 

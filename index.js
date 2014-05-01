@@ -77,7 +77,9 @@ function resolve_datasets($e, source) {
 	}
 
 	// support for custom templates
-	setup_template(dataset, templateName);
+	if (templateName) {
+		dataset.template = templateName;
+	}
 
 	if (Array.isArray(source) || (typeof source == 'function' && source.length === 0)) {
 		dataset.local = source;
@@ -85,7 +87,7 @@ function resolve_datasets($e, source) {
 	}
 
 	dataset.source = source;
-	dataset.templates = setup_templates(dataset);
+	dataset.templates = make_templates(dataset);
 
 	return dataset;
 }
@@ -103,10 +105,17 @@ function resolve_source(element, name) {
 	return fn;
 }
 
-function setup_template(dataset, template) {
-	if (!template) return;
-	var tmpl = Template[template];
-	dataset.template = function(context) {
+function make_template_function(templateName) {
+	if (!templateName) {
+		throw new Error("templateName is not specified");
+	}
+
+	var tmpl = Template[templateName];
+	if (!tmpl) {
+		throw new Error("Template '" + templateName  + "' is not defined");
+	}
+
+	return function(context) {
 		var div = $("<div/>");
 		var range = UI.renderWithData(tmpl, context);
 		UI.insert(range, div[0]);
@@ -114,13 +123,18 @@ function setup_template(dataset, template) {
 	};
 }
 
-function setup_templates(dataset) {
+function make_templates(dataset) {
 	var templates = {};
 	if (dataset.header) {
 		templates.header = dataset.header;
 	}
 	if (dataset.template) {
-		templates.suggestion = dataset.template;
+		var templateFn = typeof dataset.template == 'string'
+			? make_template_function(dataset.template)
+			: dataset.template;
+		if (typeof templateFn == 'function') {
+			templates.suggestion = templateFn;
+		}
 	}
 	return templates;
 }
@@ -147,11 +161,12 @@ function make_bloodhound(dataset) {
 		typeof dataset.local == 'function' && dataset.local.length === 0;
 
 	var engine;
+	var valueKey = dataset.valueKey || 'value';
 
 	if (need_bloodhound) {
 		var options = $.extend({}, dataset, {
 			// TODO support custom tokenizers
-			datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.value); },
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace(valueKey),
 			queryTokenizer: Bloodhound.tokenizers.whitespace
 		});
 
@@ -174,8 +189,8 @@ function make_bloodhound(dataset) {
 	}
 
 	return {
-		displayKey: 'value',
+		displayKey: valueKey,
 		source: need_bloodhound ? bloodhound_source : dataset.local,
-		templates: setup_templates(dataset)
+		templates: make_templates(dataset)
 	};
 }
