@@ -12,7 +12,10 @@ Meteor.typeahead = function(element, source) {
 	if (Array.isArray(datasets)) {
 		$e.typeahead.apply($e, [null].concat(datasets));
 	} else {
-		$e.typeahead(null, datasets);
+		var highlight = Boolean($e.data('highlight')) || false;
+		var hint = Boolean($e.data('hint')) || false;
+		var minLength = parseInt($e.data('min-length')) || 1;
+		$e.typeahead({highlight: highlight, hint: hint, minLength: minLength}, datasets);
 	}
 
 	// fix to apply bootstrap form-control to tt-hint
