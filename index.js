@@ -9,13 +9,26 @@ Meteor.typeahead = function(element, source) {
 
 	$e.typeahead('destroy');
 
+	var opts = $e.data('options') || {};
+	if (typeof opts != 'object') {
+		opts = {};
+	}
+
+	// other known options passed via data attributes
+	var highlight = Boolean($e.data('highlight')) || false;
+	var hint = Boolean($e.data('hint')) || false;
+	var minLength = parseInt($e.data('min-length')) || 1;
+
+	var options = $.extend(opts, {
+		highlight: highlight,
+		hint: hint,
+		minLength: minLength
+	});
+
 	if (Array.isArray(datasets)) {
-		$e.typeahead.apply($e, [null].concat(datasets));
+		$e.typeahead.apply($e, [options].concat(datasets));
 	} else {
-		var highlight = Boolean($e.data('highlight')) || false;
-		var hint = Boolean($e.data('hint')) || false;
-		var minLength = parseInt($e.data('min-length')) || 1;
-		$e.typeahead({highlight: highlight, hint: hint, minLength: minLength}, datasets);
+		$e.typeahead(options, datasets);
 	}
 
 	// fix to apply bootstrap form-control to tt-hint
