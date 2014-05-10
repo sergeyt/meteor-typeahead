@@ -5,13 +5,13 @@
 [![DevDeps Status](https://david-dm.org/sergeyt/meteor-typeahead/dev-status.png)](https://david-dm.org/sergeyt/meteor-typeahead#info=devDependencies)
 
 [![NPM version](https://badge.fury.io/js/meteor-typeahead.png)](http://badge.fury.io/js/meteor-typeahead)
-[![meteor package version](http://img.shields.io/badge/atmosphere-0.0.8-brightgreen.svg)](https://atmospherejs.com/package/typeahead)
+[![meteor package version](http://img.shields.io/badge/atmosphere-0.0.9-brightgreen.svg)](https://atmospherejs.com/package/typeahead)
 
 [![NPM](https://nodei.co/npm/meteor-typeahead.png?downloads=true&stars=true)](https://nodei.co/npm/meteor-typeahead/)
 
 # meteor-typeahead
 
-Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor
+Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 0.8+
 
 ## API
 
