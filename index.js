@@ -18,6 +18,8 @@ Meteor.typeahead = function(element, source) {
 	var highlight = Boolean($e.data('highlight')) || false;
 	var hint = Boolean($e.data('hint')) || false;
 	var minLength = parseInt($e.data('min-length')) || 1;
+        var autocompleted = resolve_source($e[0], $e.data('autocompleted')) || null;
+        var selected = resolve_source($e[0], $e.data('selected')) || null;
 
 	var options = $.extend(opts, {
 		highlight: highlight,
@@ -28,7 +30,11 @@ Meteor.typeahead = function(element, source) {
 	if (Array.isArray(datasets)) {
 		$e.typeahead.apply($e, [options].concat(datasets));
 	} else {
-		$e.typeahead(options, datasets);
+		$e.typeahead(options, datasets).on(
+                  'typeahead:selected', selected
+                ).on(
+                  'typeahead:autocompleted', autocompleted
+                );
 	}
 
 	// fix to apply bootstrap form-control to tt-hint
@@ -159,7 +165,11 @@ function make_templates(dataset) {
 function make_bloodhound(dataset) {
 
 	function wrap_value(value) {
+          if (typeof value == 'object') {
+                return value;
+          } else {
 		return {value: value};
+          }
 	}
 
 	if (!dataset.template) {
