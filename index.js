@@ -18,8 +18,8 @@ Meteor.typeahead = function(element, source) {
 	var highlight = Boolean($e.data('highlight')) || false;
 	var hint = Boolean($e.data('hint')) || false;
 	var minLength = parseInt($e.data('min-length')) || 1;
-        var autocompleted = resolve_source($e[0], $e.data('autocompleted')) || null;
-        var selected = resolve_source($e[0], $e.data('selected')) || null;
+	var autocompleted = resolve_template_function($e[0], $e.data('autocompleted'));
+	var selected = resolve_template_function($e[0], $e.data('selected'));
 
 	var options = $.extend(opts, {
 		highlight: highlight,
@@ -27,14 +27,19 @@ Meteor.typeahead = function(element, source) {
 		minLength: minLength
 	});
 
+	var instance;
 	if (Array.isArray(datasets)) {
-		$e.typeahead.apply($e, [options].concat(datasets));
+		instance = $e.typeahead.apply($e, [options].concat(datasets));
 	} else {
-		$e.typeahead(options, datasets).on(
-                  'typeahead:selected', selected
-                ).on(
-                  'typeahead:autocompleted', autocompleted
-                );
+		instance = $e.typeahead(options, datasets);
+	}
+
+	// event handlers (PR #18)
+	if (typeof selected == 'function') {
+		instance.on('typeahead:selected', selected);
+	}
+	if (typeof autocompleted == 'function') {
+		instance.on('typeahead:autocompleted', autocompleted);
 	}
 
 	// fix to apply bootstrap form-control to tt-hint
@@ -66,7 +71,7 @@ function resolve_datasets($e, source) {
 	var datasets = $e.data('sets');
 	if (datasets) {
 		if (typeof datasets == 'string') {
-			datasets = resolve_source(element, datasets);
+			datasets = resolve_template_function(element, datasets);
 		}
 		if (typeof datasets == 'function') {
 			datasets = datasets() || [];
@@ -86,7 +91,7 @@ function resolve_datasets($e, source) {
 	}
 
 	if (typeof source === 'string') {
-		source = resolve_source(element, source);
+		source = resolve_template_function(element, source);
 	}
 
 	var dataset = {
@@ -114,7 +119,7 @@ function resolve_datasets($e, source) {
 	return dataset;
 }
 
-function resolve_source(element, name) {
+function resolve_template_function(element, name) {
 	var component = UI.DomRange.getContainingComponent(element);
 	if (!component) {
 		return [];
