@@ -84,7 +84,7 @@ function resolve_datasets($e, source) {
 	var name = $e.attr('name') || $e.attr('id') || 'dataset';
 	var limit = $e.data('limit');
 	var templateName = $e.data('template'); // specifies name of custom template
-	var displayKey = $e.data('display-key');
+	var valueKey = $e.data('value-key');
 
 	if (!source) {
 		source = $e.data('source') || [];
@@ -96,7 +96,8 @@ function resolve_datasets($e, source) {
 
 	var dataset = {
 		name: name,
-		displayKey: displayKey
+		valueKey: valueKey,
+		displayKey: valueKey
 	};
 
 	if (limit) {
