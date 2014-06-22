@@ -13,6 +13,8 @@
 
 Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 0.8+
 
+Demo: http://typeahead.meteor.com/
+
 ## API
 
 ```javascript
