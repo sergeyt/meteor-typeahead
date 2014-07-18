@@ -18,8 +18,14 @@ Meteor.typeahead = function(element, source) {
 	var highlight = Boolean($e.data('highlight')) || false;
 	var hint = Boolean($e.data('hint')) || false;
 	var minLength = parseInt($e.data('min-length')) || 1;
-	var autocompleted = resolve_template_function($e[0], $e.data('autocompleted'));
-	var selected = resolve_template_function($e[0], $e.data('selected'));
+	
+	if($e.data('autocompleted')) {
+		var autocompleted = resolve_template_function($e[0], $e.data('autocompleted'));
+	}
+	if($e.data('selected')) {
+		var selected = resolve_template_function($e[0], $e.data('selected'));
+	}
+
 
 	var options = $.extend(opts, {
 		highlight: highlight,
