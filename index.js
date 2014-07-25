@@ -127,11 +127,11 @@ function resolve_datasets($e, source) {
 }
 
 function resolve_template_function(element, name) {
-	var component = UI.DomRange.getContainingComponent(element);
-	if (!component) {
+	var view = Blaze.getElementView(element);
+	if (!view) {
 		return [];
 	}
-	var fn = component[name];
+	var fn = view.template && view.template[name];
 	if (typeof fn != 'function') {
 		console.log("Unable to resolve data source function '%s'.", name);
 		return [];
