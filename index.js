@@ -18,8 +18,14 @@ Meteor.typeahead = function(element, source) {
 	var highlight = Boolean($e.data('highlight')) || false;
 	var hint = Boolean($e.data('hint')) || false;
 	var minLength = parseInt($e.data('min-length')) || 1;
-	var autocompleted = resolve_template_function($e[0], $e.data('autocompleted'));
-	var selected = resolve_template_function($e[0], $e.data('selected'));
+	
+	if($e.data('autocompleted')) {
+		var autocompleted = resolve_template_function($e[0], $e.data('autocompleted'));
+	}
+	if($e.data('selected')) {
+		var selected = resolve_template_function($e[0], $e.data('selected'));
+	}
+
 
 	var options = $.extend(opts, {
 		highlight: highlight,
@@ -121,11 +127,11 @@ function resolve_datasets($e, source) {
 }
 
 function resolve_template_function(element, name) {
-	var component = UI.DomRange.getContainingComponent(element);
-	if (!component) {
+	var view = Blaze.getElementView(element);
+	if (!view) {
 		return [];
 	}
-	var fn = component[name];
+	var fn = view.template && view.template[name];
 	if (typeof fn != 'function') {
 		console.log("Unable to resolve data source function '%s'.", name);
 		return [];
