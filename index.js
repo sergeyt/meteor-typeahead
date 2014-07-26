@@ -127,15 +127,27 @@ function resolve_datasets($e, source) {
 }
 
 function resolve_template_function(element, name) {
-	var view = Blaze.getElementView(element);
-	if (!view) {
-		return [];
+	var fn = null;
+
+	if (typeof Blaze == "undefined") {
+		var component = UI.DomRange.getContainingComponent(element);
+		if (!component) {
+			return [];
+		}
+		fn = component[name];
+	} else {
+		var view = Blaze.getElementView(element);
+		if (!view) {
+			return [];
+		}
+		fn = view.template && view.template[name];
 	}
-	var fn = view.template && view.template[name];
+
 	if (typeof fn != 'function') {
 		console.log("Unable to resolve data source function '%s'.", name);
 		return [];
 	}
+
 	return fn;
 }
 
