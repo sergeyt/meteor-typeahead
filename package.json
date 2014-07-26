@@ -16,10 +16,13 @@
   "author": "Sergey Todyshev <stodyshev@gmail.com>",
   "contributors": [
     "Sergey Todyshev <stodyshev@gmail.com>",
+    "Benjamin Berman <benjamin.s.berman@gmail.com>",
     "Dan Dascalescu <ddascalescu+github@gmail.com>",
+    "Oliver Lloyd <oliver_lloyd@hotmail.com>",
     "Thimo Brinkmann <thimo.brinkmann@googlemail.com>",
     "cinjon <cinjon.resnick@gmail.com>",
-    "grigio <grigio.org@gmail.com>"
+    "grigio <grigio.org@gmail.com>",
+    "zhenya <eugeneas@gmail.com>"
   ],
   "dependencies": {},
   "devDependencies": {
