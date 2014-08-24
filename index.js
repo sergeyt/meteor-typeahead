@@ -138,7 +138,7 @@ function resolve_datasets($e, source) {
 					return null;
 			}
 		}).filter(function(p) {
-			return p != null;
+			return p !== null;
 		}).forEach(function(p) {
 			dataset[p.key] = p.value;
 		});
