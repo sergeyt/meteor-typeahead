@@ -10,7 +10,7 @@
 
 # meteor-typeahead
 
-Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 0.8+
+Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 0.9.1+
 
 Demo: http://typeahead.meteor.com/
 
