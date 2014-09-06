@@ -165,7 +165,7 @@ function resolve_template_function(element, name) {
 		}
 		fn = component[name];
 	} else {
-		var view = Blaze.getElementView(element);
+		var view = $.isFunction(Blaze.getView) ? Blaze.getView(element) : Blaze.getElementView(element);
 		if (!view) {
 			return [];
 		}
@@ -192,8 +192,12 @@ function make_template_function(templateName) {
 
 	return function(context) {
 		var div = $("<div/>");
-		var range = UI.renderWithData(tmpl, context);
-		UI.insert(range, div[0]);
+		if ($.isFunction(Blaze.renderWithData)) {
+			Blaze.renderWithData(tmpl, context, div[0]);
+		} else { // for meteor < v0.9
+			var range = UI.renderWithData(tmpl, context);
+			UI.insert(range, div[0]);
+		}
 		return div.html();
 	};
 }
