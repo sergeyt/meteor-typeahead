@@ -159,13 +159,13 @@ function resolve_template_function(element, name) {
 	var fn = null;
 
 	if (typeof Blaze == "undefined") {
-		var component = UI.DomRange.getContainingComponent(element);
+		var component = Package.blaze.UI.DomRange.getContainingComponent(element);
 		if (!component) {
 			return [];
 		}
 		fn = component[name];
 	} else {
-		var view = Blaze.getElementView(element);
+		var view = Blaze.getView();
 		if (!view) {
 			return [];
 		}
@@ -192,8 +192,8 @@ function make_template_function(templateName) {
 
 	return function(context) {
 		var div = $("<div/>");
-		var range = UI.renderWithData(tmpl, context);
-		UI.insert(range, div[0]);
+		var range = Package.blaze.UI.renderWithData(tmpl, context);
+		Package.blaze.UI.insert(range, div[0]);
 		return div.html();
 	};
 }
