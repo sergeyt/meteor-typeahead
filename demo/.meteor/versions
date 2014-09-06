@@ -33,7 +33,7 @@ reactive-var@1.0.1
 reload@1.0.1
 retry@1.0.0
 routepolicy@1.0.0
-sergeyt:typeahead@0.2.0
+sergeyt:typeahead@0.1.2
 session@1.0.1
 spacebars-compiler@1.0.2
 spacebars@1.0.1
