@@ -5,9 +5,17 @@ Package.describe({
     version: "0.0.12"
 });
 
-Package.onUse(function(api) {
-	api.versionsFrom('METEOR@0.9.1');
-	api.use(['jquery', 'blaze'], 'client');
-	api.addFiles('typeahead.bundle.js', 'client');
-	api.addFiles('index.js', 'client');
-});
+if (typeof Package.onUse == "function") { // for meteor v0.9+
+	Package.onUse(function(api) {
+		api.versionsFrom('METEOR@0.9.1');
+		api.use(['jquery', 'blaze', 'ui'], 'client');
+		api.addFiles('typeahead.bundle.js', 'client');
+		api.addFiles('index.js', 'client');
+	});
+} else { // for meteor < v0.9
+	Package.on_use(function(api) {
+		api.use(['jquery', 'blaze', 'ui'], 'client');
+		api.add_files('typeahead.bundle.js', 'client');
+		api.add_files('index.js', 'client');
+	});
+}
