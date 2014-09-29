@@ -98,14 +98,10 @@ function resolve_datasets($e, source) {
 	var limit = $e.data('limit');
 	var templateName = $e.data('template'); // specifies name of custom template
 	var templates = $e.data('templates'); // specifies custom templates
-	var valueKey = $e.data('value-key');
+	var valueKey = $e.data('value-key') || 'value';
 
 	if (!source) {
 		source = $e.data('source') || [];
-	}
-
-	if (typeof source === 'string') {
-		source = resolve_template_function(element, source);
 	}
 
 	var dataset = {
@@ -125,23 +121,23 @@ function resolve_datasets($e, source) {
 
 	// parse string with custom templates if it is specified
 	if (templates && typeof templates === 'string') {
-		var templateKeys = {header:1, footer:1, template: 1, suggestion: 1, empty: 1};
-		var pairs = templates.split(/[;,]+/);
-		pairs.map(function(s) {
-			var p = s.split(/[:=]+/).map(function(it){ return it.trim(); });
-			switch (p.length) {
-				case 1: // set suggestion template when no key is specified
-					return {key: 'template', value: p[0]};
-				case 2:
-					return (p[0] in templateKeys) ? {key: p[0], value: p[1]} : null;
-				default:
-					return null;
-			}
-		}).filter(function(p) {
-			return p !== null;
-		}).forEach(function(p) {
-			dataset[p.key] = p.value;
-		});
+		set_templates(dataset, templates);
+	}
+
+	dataset.templates = make_templates(dataset);
+
+	if (typeof source === 'string') {
+		if (source.indexOf('/') >= 0) { // support prefetch urls
+			isprefetch = true;
+			dataset.prefetch = {
+				url: source,
+				filter: function(list) {
+					return (list || []).map(value_wrapper(dataset));
+				}
+			};
+			return make_bloodhound(dataset);
+		}
+		source = resolve_template_function(element, source);
 	}
 
 	if ($.isArray(source) || ($.isFunction(source) && source.length === 0)) {
@@ -150,11 +146,32 @@ function resolve_datasets($e, source) {
 	}
 
 	dataset.source = source;
-	dataset.templates = make_templates(dataset);
 
 	return dataset;
 }
 
+// Parses string with template names and set appropriate dataset properties.
+function set_templates(dataset, templates) {
+	var templateKeys = {header:1, footer:1, template: 1, suggestion: 1, empty: 1};
+	var pairs = templates.split(/[;,]+/);
+	pairs.map(function(s) {
+		var p = s.split(/[:=]+/).map(function(it){ return it.trim(); });
+		switch (p.length) {
+			case 1: // set suggestion template when no key is specified
+				return {key: 'template', value: p[0]};
+			case 2:
+				return (p[0] in templateKeys) ? {key: p[0], value: p[1]} : null;
+			default:
+				return null;
+		}
+	}).filter(function(p) {
+		return p !== null;
+	}).forEach(function(p) {
+		dataset[p.key] = p.value;
+	});
+}
+
+// Resolves function with specified name from context of given element.
 function resolve_template_function(element, name) {
 	var fn = null;
 
@@ -180,6 +197,8 @@ function resolve_template_function(element, name) {
 	return fn;
 }
 
+// Returns HTML template function that generates HTML string using data from suggestion item.
+// This function is implemented using given meteor template specified by templateName argument.
 function make_template_function(templateName) {
 	if (!templateName) {
 		throw new Error("templateName is not specified");
@@ -202,6 +221,7 @@ function make_template_function(templateName) {
 	};
 }
 
+// Creates object with template functions (for header, footer, suggestion, empty templates).
 function make_templates(dataset) {
 
 	var templates = {};
@@ -230,38 +250,41 @@ function make_templates(dataset) {
 	return templates;
 }
 
-// creates Bloodhound suggestion engine based on given dataset
+// Returns function to map string value to plain JS object required by typeahead.
+function value_wrapper(dataset) {
+	return function(value) {
+		if (typeof value == 'object') {
+			return value;
+		} else {
+			var item = {};
+			item[dataset.valueKey] = value;
+			return item;
+		}
+	};
+}
+
+// Creates Bloodhound suggestion engine based on given dataset.
 function make_bloodhound(dataset) {
-
-	function wrap_value(value) {
-          if (typeof value == 'object') {
-                return value;
-          } else {
-		return {value: value};
-          }
-	}
-
 	if (!dataset.template) {
 		if (Array.isArray(dataset.local)) {
 			dataset.local = dataset.local.map(wrap_value);
 		} else if ($.isFunction(dataset.local) && dataset.local.length === 0) {
 			var localFn = dataset.local;
 			dataset.local = function() {
-				return (localFn() || []).map(wrap_value);
+				return (localFn() || []).map(value_wrapper(dataset));
 			};
 		}
 	}
 
-	var need_bloodhound = Array.isArray(dataset.local) ||
+	var need_bloodhound = dataset.prefetch || Array.isArray(dataset.local) ||
 		$.isFunction(dataset.local) && dataset.local.length === 0;
 
 	var engine;
-	var valueKey = dataset.valueKey || 'value';
 
 	if (need_bloodhound) {
 		var options = $.extend({}, dataset, {
 			// TODO support custom tokenizers
-			datumTokenizer: Bloodhound.tokenizers.obj.whitespace(valueKey),
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace(dataset.valueKey),
 			queryTokenizer: Bloodhound.tokenizers.whitespace
 		});
 
@@ -283,9 +306,13 @@ function make_bloodhound(dataset) {
 		return fn(query, cb);
 	}
 
-	return {
-		displayKey: valueKey,
-		source: need_bloodhound ? bloodhound_source : dataset.local,
-		templates: make_templates(dataset)
-	};
+	var src = need_bloodhound || typeof dataset.local !== 'undefined' ?
+		{source: need_bloodhound ? bloodhound_source : dataset.local}
+		: {};
+
+	var templates = typeof dataset.templates === 'undefined' ?
+		{templates: make_templates(dataset)}
+		: {};
+
+	return $.extend({}, dataset, src, templates);
 }

@@ -86,12 +86,12 @@ if (Meteor.isClient) {
 	};
 
 	// simple example
-	Template.example1.nba = function(){
+	Template.basic.nba = function(){
 		return nba();
 	};
 
 	// example for multiple datasets
-	Template.example2.teams = function(){
+	Template.multiple_datasets.teams = function(){
 		return [
 			{
 				name: 'nba-teams',
@@ -128,12 +128,12 @@ if (Meteor.isClient) {
 	};
 
 	// example for custom template
-	Template.example3.repos = function(){
+	Template.custom_template.repos = function(){
 		return Repos.find().fetch();
 	};
 
 	// example for async data-source
-	Template.example4.emails = function(query, callback) {
+	Template.async_source.emails = function(query, callback) {
 		Meteor.call('emails', function(err, res) {
 			if (err) {
 				console.log(err);
@@ -143,14 +143,14 @@ if (Meteor.isClient) {
 		});
 	};
 
-	Template.example5.feed = function(query, callback){
+	Template.feed.feed = function(query, callback){
 		// TODO do remote query here
 		var set = ['!', '!!', '!!!'].map(function(a){ return {value: query + a}; });
 		callback(set);
     };
 
 	// example for server side search
-	Template.example6.search = function(query, callback) {
+	Template.server_side.search = function(query, callback) {
 		Meteor.call('search', query, {}, function(err, res) {
 			if (err) {
 				console.log(err);

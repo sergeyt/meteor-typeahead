@@ -24,32 +24,46 @@
 	<div class="row">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
-			{{>example1}}
-			{{>example2}}
-			{{>example3}}
-			{{>example4}}
-			{{>example5}}
-			{{>example6}}
+			{{>basic}}
+			{{>prefetch}}
+			{{>multiple_datasets}}
+			{{>custom_template}}
+			{{>async_source}}
+			{{>feed}}
+			{{>server_side}}
 		</div>
 	</div>
 </template>
 
-<template name="example1">
+<template name="basic">
 	<div>
 		<h2>Using data-source attribute</h2>
 		<div class="form-group">
 			<input class="form-control typeahead" name="team" type="text" placeholder="NBA teams" autocomplete="off" spellcheck="off" data-source="nba"/>
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054081}}}
+			{{{gist 'sergeyt' '8054081'}}}
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054591}}}
+			{{{gist 'sergeyt' '8054591'}}}
 		</div>
 	</div>
 </template>
 
-<template name="example2">
+<template name="prefetch">
+	<div>
+		<h2>Prefetch</h2>
+		<div class="form-group">
+			<input class="form-control typeahead" name="country" type="text" placeholder="Country"
+				   autocomplete="off" spellcheck="off" data-source="/data/countries.json"/>
+		</div>
+		<div class="gist">
+			{{{gist 'sergeyt' 'fcf8b91634ba4003980f'}}}
+		</div>
+	</div>
+</template>
+
+<template name="multiple_datasets">
 	<div>
 		<h2>Multiple datasets</h2>
 		<div class="form-group example-sports">
@@ -58,10 +72,10 @@
 				   data-sets="teams"/>
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054642}}}
+			{{{gist 'sergeyt' '8054642'}}}
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054660}}}
+			{{{gist 'sergeyt' '8054660'}}}
 		</div>
 	</div>
 </template>
@@ -70,7 +84,7 @@
 	<h4><i>{{name}}</i></h4>
 </template>
 
-<template name="example3">
+<template name="custom_template">
 	<div>
 		<h2>Using custom template</h2>
 		<div class="form-group example-twitter-oss">
@@ -79,10 +93,10 @@
 				   data-source="repos" data-templates="repo;empty:noresults"/>
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054682}}}
+			{{{gist 'sergeyt' '8054682'}}}
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054730}}}
+			{{{gist 'sergeyt' '8054730'}}}
 		</div>
 	</div>
 </template>
@@ -97,7 +111,7 @@
 	<span>No results found</span>
 </template>
 
-<template name="example4">
+<template name="async_source">
 	<div>
 		<h2>Async reactive data-source</h2>
 		<div class="form-group">
@@ -106,15 +120,15 @@
 				   data-source="emails"/>
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054834}}}
+			{{{gist 'sergeyt' '8054834'}}}
 		</div>
 		<div class="gist">
-			{{{gist sergeyt 8054865}}}
+			{{{gist 'sergeyt' '8054865'}}}
 		</div>
 	</div>
 </template>
 
-<template name="example5">
+<template name="feed">
 	<div>
 		<h2>Queryable data feed</h2>
 		<div class="form-group">
@@ -125,7 +139,7 @@
 	</div>
 </template>
 
-<template name="example6">
+<template name="server_side">
 	<div>
 		<h2>Server side search</h2>
 		<div class="form-group">
