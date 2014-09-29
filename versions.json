@@ -1,12 +1,20 @@
 {
   "dependencies": [
     [
+      "base64",
+      "1.0.0"
+    ],
+    [
       "blaze",
-      "2.0.0"
+      "2.0.1"
+    ],
+    [
+      "deps",
+      "1.0.4"
     ],
     [
       "ejson",
-      "1.0.1"
+      "1.0.3"
     ],
     [
       "geojson-utils",
@@ -14,7 +22,7 @@
     ],
     [
       "htmljs",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "id-map",
@@ -30,11 +38,11 @@
     ],
     [
       "meteor",
-      "1.0.3"
+      "1.1.1"
     ],
     [
       "minimongo",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "observe-sequence",
@@ -50,7 +58,7 @@
     ],
     [
       "reactive-var",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "tracker",
@@ -58,7 +66,7 @@
     ],
     [
       "ui",
-      "1.0.1"
+      "1.0.3"
     ],
     [
       "underscore",
@@ -66,6 +74,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.27",
+  "toolVersion": "meteor-tool@1.0.32",
   "format": "1.0"
 }
