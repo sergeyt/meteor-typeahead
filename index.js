@@ -253,13 +253,12 @@ function make_templates(dataset) {
 // Returns function to map string value to plain JS object required by typeahead.
 function value_wrapper(dataset) {
 	return function(value) {
-		if (typeof value == 'object') {
+		if (typeof value === 'object') {
 			return value;
-		} else {
-			var item = {};
-			item[dataset.valueKey] = value;
-			return item;
 		}
+		var item = {};
+		item[dataset.valueKey] = value;
+		return item;
 	};
 }
 
