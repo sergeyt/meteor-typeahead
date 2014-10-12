@@ -266,7 +266,7 @@ function value_wrapper(dataset) {
 function make_bloodhound(dataset) {
 	if (!dataset.template) {
 		if (Array.isArray(dataset.local)) {
-			dataset.local = dataset.local.map(wrap_value);
+			dataset.local = dataset.local.map(value_wrapper(dataset));
 		} else if ($.isFunction(dataset.local) && dataset.local.length === 0) {
 			var localFn = dataset.local;
 			dataset.local = function() {
