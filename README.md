@@ -4,7 +4,7 @@
 
 [![LICENSE](http://img.shields.io/badge/LICENSE-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![NPM version](https://badge.fury.io/js/meteor-typeahead.png)](http://badge.fury.io/js/meteor-typeahead)
-[![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_2-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
+[![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_3-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
 
 [![NPM](https://nodei.co/npm/meteor-typeahead.png?downloads=true&stars=true)](https://nodei.co/npm/meteor-typeahead/)
 
