@@ -186,7 +186,7 @@ function resolve_template_function(element, name) {
 		if (!view) {
 			return [];
 		}
-		fn = view.template && view.template[name];
+		fn = view.template && Blaze._getTemplateHelper(view.template, name);
 	}
 
 	if (!$.isFunction(fn)) {
