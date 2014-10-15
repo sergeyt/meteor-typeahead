@@ -182,11 +182,17 @@ function resolve_template_function(element, name) {
 		}
 		fn = component[name];
 	} else {
-		var view = $.isFunction(Blaze.getView) ? Blaze.getView(element) : Blaze.getElementView(element);
+		var view = $.isFunction(Blaze.getView) ?
+			Blaze.getView(element)
+			: Blaze.getElementView(element);
 		if (!view) {
 			return [];
 		}
-		fn = view.template && Blaze._getTemplateHelper(view.template, name);
+		if (view.template) {
+			fn = $.isFunction(Blaze._getTemplateHelper) ?
+				Blaze._getTemplateHelper(view.template, name)
+				: view.template[name];
+		}
 	}
 
 	if (!$.isFunction(fn)) {
