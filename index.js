@@ -152,7 +152,7 @@ function resolve_datasets($e, source) {
 
 // typeahead.js throws error if dataset name does not meet /^[_a-zA-Z0-9-]+$/
 function normalize_dataset_name(name) {
-	return name.replace(/\./, '_');
+	return name.replace(/\./g, '_');
 }
 
 // Parses string with template names and set appropriate dataset properties.
