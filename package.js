@@ -2,7 +2,7 @@ Package.describe({
 	name: "sergeyt:typeahead",
 	summary: "Autocomplete package for meteor powered by twitter typeahead.js",
 	git: "https://github.com/sergeyt/meteor-typeahead.git",
-    version: "0.10.5_4"
+    version: "0.10.5_5"
 });
 
 if (typeof Package.onUse == "function") { // for meteor v0.9+
@@ -19,4 +19,3 @@ if (typeof Package.onUse == "function") { // for meteor v0.9+
 		api.add_files('index.js', 'client');
 	});
 }
-
