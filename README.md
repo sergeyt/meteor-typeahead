@@ -10,9 +10,20 @@
 
 # meteor-typeahead
 
+[th]: http://twitter.github.io/typeahead.js
+
 Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 0.9+.
 
 Demo: http://typeahead.meteor.com/
+
+# Features
+
+* Support fetching meteor collections as typeahead dataset
+* Easy to bind autocomplete suggestions to input using `data-source` attribute
+* Support most [typeahead.js][th] use cases:
+  * Async data sources
+  * Prefetched JSON data source
+* See demo app to find more functions
 
 ## API
 
