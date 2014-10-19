@@ -25,6 +25,7 @@
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
 			{{>basic}}
+			{{>langs}}
 			{{>prefetch}}
 			{{>multiple_datasets}}
 			{{>custom_template}}
@@ -39,13 +40,29 @@
 	<div>
 		<h2>Using data-source attribute</h2>
 		<div class="form-group">
-			<input class="form-control typeahead" name="team.name" type="text" placeholder="NBA teams" autocomplete="off" spellcheck="off" data-source="nba"/>
+			<input class="form-control typeahead" name="super.team.name" type="text" placeholder="NBA teams" autocomplete="off" spellcheck="off" data-source="nba"/>
 		</div>
 		<div class="gist">
 			{{{gist 'sergeyt' '8054081'}}}
 		</div>
 		<div class="gist">
 			{{{gist 'sergeyt' '8054591'}}}
+		</div>
+	</div>
+</template>
+
+<template name="langs">
+	<div>
+		<h2>Array of objects without value property.</h2>
+		<div class="form-group">
+			<input class="form-control typeahead" name="lang" type="text" placeholder="Programming language"
+				autocomplete="off" spellcheck="off" data-source="list" data-value-key="name"/>
+		</div>
+		<div class="gist">
+			{{{gist 'sergeyt' '1268ec50617b3efa2142'}}}
+		</div>
+		<div class="gist">
+			{{{gist 'sergeyt' '109d44d69582e8512a5f'}}}
 		</div>
 	</div>
 </template>

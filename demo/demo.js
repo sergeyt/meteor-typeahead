@@ -90,6 +90,17 @@ if (Meteor.isClient) {
 		return nba();
 	};
 
+	// dataset without 'value' property
+	Template.langs.helpers({
+	  list: function() {
+	    return [
+	      {"name": "C#"},
+	      {"name": "JavaScript"},
+				{"name": "CoffeeScript"}
+	    ];
+	  }
+	});
+
 	// example for multiple datasets
 	Template.multiple_datasets.teams = function(){
 		return [
