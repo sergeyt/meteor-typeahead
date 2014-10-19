@@ -4,7 +4,7 @@
 
 [![LICENSE](http://img.shields.io/badge/LICENSE-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![NPM version](https://badge.fury.io/js/meteor-typeahead.png)](http://badge.fury.io/js/meteor-typeahead)
-[![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_5-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
+[![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_6-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
 
 [![NPM](https://nodei.co/npm/meteor-typeahead.png?downloads=true&stars=true)](https://nodei.co/npm/meteor-typeahead/)
 
@@ -19,11 +19,13 @@ Demo: http://typeahead.meteor.com/
 # Features
 
 * Support fetching meteor collections as typeahead dataset
-* Easy to bind autocomplete suggestions to input using `data-source` attribute
+* Easy to bind auto-complete suggestions to input using `data-source` attribute
+* Allow using meteor template to visualize auto-complete suggestion
 * Support most [typeahead.js][th] use cases:
-  * Async data sources
+  * Asynchronous data sources
   * Prefetched JSON data source
-* See demo app to find more functions
+  * Multiple datasets
+* See [demo](http://typeahead.meteor.com/) application to find more functions
 
 ## API
 
