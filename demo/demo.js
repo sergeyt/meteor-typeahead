@@ -86,9 +86,11 @@ if (Meteor.isClient) {
 	};
 
 	// simple example
-	Template.basic.nba = function(){
-		return nba();
-	};
+	Template.basic.helpers({
+		nba: function(){
+			return nba();
+		}
+	});
 
 	// dataset without 'value' property
 	Template.langs.helpers({
@@ -102,74 +104,84 @@ if (Meteor.isClient) {
 	});
 
 	// example for multiple datasets
-	Template.multiple_datasets.teams = function(){
-		return [
-			{
-				name: 'nba-teams',
-				valueKey: 'name',
-				local: function() {
-					return Nba.find().fetch();
+	Template.multiple_datasets.helpers({
+		teams: function(){
+			return [
+				{
+					name: 'nba-teams',
+					valueKey: 'name',
+					local: function() {
+						return Nba.find().fetch();
+					},
+					header: '<h3 class="league-name">NBA Teams</h3>',
+					template: 'team'
 				},
-				header: '<h3 class="league-name">NBA Teams</h3>',
-				template: 'team'
-			},
-			{
-				name: 'nhl-teams',
-				valueKey: 'name',
-				local: function(){
-					return Nhl.find().fetch();
+				{
+					name: 'nhl-teams',
+					valueKey: 'name',
+					local: function(){
+						return Nhl.find().fetch();
+					},
+					header: '<h3 class="league-name">NHL Teams</h3>',
+					template: 'team'
 				},
-				header: '<h3 class="league-name">NHL Teams</h3>',
-				template: 'team'
-			},
-//			{
-//				name: 'other',
-//				header: '<h3 class="league-name">Other</h3>',
-//				local: function(query, callback) {
-//					Meteor.call('search', query, {}, function(err, res) {
-//						if (err) {
-//							console.log(err);
-//							return;
-//						}
-//						callback(res.map(function(v){ return {value: v.name}; }));
-//					});
-//				}
-//			}
-		];
-	};
+	//			{
+	//				name: 'other',
+	//				header: '<h3 class="league-name">Other</h3>',
+	//				local: function(query, callback) {
+	//					Meteor.call('search', query, {}, function(err, res) {
+	//						if (err) {
+	//							console.log(err);
+	//							return;
+	//						}
+	//						callback(res.map(function(v){ return {value: v.name}; }));
+	//					});
+	//				}
+	//			}
+			];
+		}
+	});
 
 	// example for custom template
-	Template.custom_template.repos = function(){
-		return Repos.find().fetch();
-	};
+	Template.custom_template.helpers({
+		repos: function(){
+			return Repos.find().fetch();
+		}
+	});
 
 	// example for async data-source
-	Template.async_source.emails = function(query, callback) {
-		Meteor.call('emails', function(err, res) {
-			if (err) {
-				console.log(err);
-				return;
-			}
-			callback(res.map(function(v){ return {value: v}; }));
-		});
-	};
+	Template.async_source.helpers({
+		emails: function(query, callback) {
+			Meteor.call('emails', function(err, res) {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				callback(res.map(function(v){ return {value: v}; }));
+			});
+		}
+	});
 
-	Template.feed.feed = function(query, callback){
-		// TODO do remote query here
-		var set = ['!', '!!', '!!!'].map(function(a){ return {value: query + a}; });
-		callback(set);
-    };
+	Template.feed.helpers({
+		feed: function(query, callback){
+			// TODO do remote query here
+			var set = ['!', '!!', '!!!'].map(function(a){ return {value: query + a}; });
+			callback(set);
+	  }
+	});
 
 	// example for server side search
-	Template.server_side.search = function(query, callback) {
-		Meteor.call('search', query, {}, function(err, res) {
-			if (err) {
-				console.log(err);
-				return;
-			}
-			callback(res.map(function(v){ return {value: v.name}; }));
-		});
-	};
+	Template.server_side.helpers({
+		search: function(query, callback) {
+			Meteor.call('search', query, {}, function(err, res) {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				callback(res.map(function(v){ return {value: v.name}; }));
+			});
+		}
+	});
 
 	Meteor.startup(function(){
 		// initializes all typeahead instances
