@@ -178,28 +178,12 @@ function set_templates(dataset, templates) {
 
 // Resolves function with specified name from context of given element.
 function resolve_template_function(element, name) {
-	var fn = null;
-
-	if (typeof Blaze == "undefined") {
-		var component = UI.DomRange.getContainingComponent(element);
-		if (!component) {
-			return [];
-		}
-		fn = component[name];
-	} else {
-		var view = $.isFunction(Blaze.getView) ?
-			Blaze.getView(element)
-			: Blaze.getElementView(element);
-		if (!view) {
-			return [];
-		}
-		if (view.template) {
-			fn = $.isFunction(Blaze._getTemplateHelper) ?
-				Blaze._getTemplateHelper(view.template, name)
-				: view.template[name];
-		}
+	var view = Blaze.getView(element);
+	if (!view || !view.template) {
+		return [];
 	}
 
+	var fn = Blaze._getTemplateHelper(view.template, name);
 	if (!$.isFunction(fn)) {
 		console.log("Unable to resolve data source function '%s'.", name);
 		return [];
