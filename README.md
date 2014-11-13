@@ -6,8 +6,6 @@
 [![NPM version](https://badge.fury.io/js/meteor-typeahead.png)](http://badge.fury.io/js/meteor-typeahead)
 [![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_7-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
 
-[![NPM](https://nodei.co/npm/meteor-typeahead.png?downloads=true&stars=true)](https://nodei.co/npm/meteor-typeahead/)
-
 # meteor-typeahead
 
 [th]: http://twitter.github.io/typeahead.js
