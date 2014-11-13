@@ -16,6 +16,7 @@ Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autoco
 
 Demo: http://typeahead.meteor.com/
 
+
 # Features
 
 * Support fetching meteor collections as typeahead dataset
@@ -26,6 +27,12 @@ Demo: http://typeahead.meteor.com/
   * Prefetched JSON data source
   * Multiple datasets
 * See [demo](http://typeahead.meteor.com/) application to find more functions
+ 
+
+## Install
+```javascript
+meteor add sergeyt:typeahead
+```
 
 ## API
 
