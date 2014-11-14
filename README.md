@@ -134,6 +134,44 @@ if (Meteor.isClient){
 }
 ```
 
+### Handling Objects Instead of primitives
+
+Strings and other simple types are handled easily by Meteor-typeahead
+ but objects are a little more complicated.  By default it looks for
+ a property named "value" (and if it doesn't exist you'll encounter
+ problems).  You can override both the field that typeahead searches
+ for matches and the field it puts into the input field upon selection
+ with a couple of data attributes:
+
+```html
+<input class="form-control typeahead" name="repo" type="text"
+       placeholder="open source projects by Twitter"
+       autocomplete="off" spellcheck="off"
+       data-source="repos" data-value-key="description"
+       data-display-key="name"/>
+```
+
+```javascript
+Template.myTemplate.helpers({
+  repos: function() {
+    return [
+      {
+        "name": "typeahead.js",
+        "description": "A fast and fully-featured autocomplete library",
+        "language": "JavaScript",
+        "value": "typeahead.js"
+      },
+      {
+        "name": "cassandra",
+        "description": "A Ruby client for the Cassandra distributed database",
+        "language": "Ruby",
+        "value": "cassandra"
+      }
+    ];
+  }
+})
+```
+
 ### Server side search
 
 ```html
