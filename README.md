@@ -12,7 +12,7 @@ Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autoco
 
 ## Examples
 
-See [demo](https://github.com/sergeyt/meteor-typeahead.js/blob/master/demo) application in this repository to find more examples.
+See [demo](https://github.com/sergeyt/meteor-typeahead/tree/master/demo) application in this repository to find more examples.
 
 ### data-source attribute
 
