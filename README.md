@@ -1,55 +1,18 @@
-[![Build Status](https://drone.io/github.com/sergeyt/meteor-typeahead/status.png)](https://drone.io/github.com/sergeyt/meteor-typeahead/latest)
+# meteor-typeahead [![Build Status](https://drone.io/github.com/sergeyt/meteor-typeahead/status.png)](https://drone.io/github.com/sergeyt/meteor-typeahead/latest) [![LICENSE](http://img.shields.io/badge/LICENSE-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) [![NPM version](https://badge.fury.io/js/meteor-typeahead.png)](http://badge.fury.io/js/meteor-typeahead) [![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_9-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
+
 [![Deps Status](https://david-dm.org/sergeyt/meteor-typeahead.png)](https://david-dm.org/sergeyt/meteor-typeahead)
 [![DevDeps Status](https://david-dm.org/sergeyt/meteor-typeahead/dev-status.png)](https://david-dm.org/sergeyt/meteor-typeahead#info=devDependencies)
 
-[![LICENSE](http://img.shields.io/badge/LICENSE-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-[![NPM version](https://badge.fury.io/js/meteor-typeahead.png)](http://badge.fury.io/js/meteor-typeahead)
-[![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_8-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
-
-# meteor-typeahead
-
 [th]: http://twitter.github.io/typeahead.js
 
-Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 1.0+.
+Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 1.0+. Issue command `meteor add sergeyt:typeahead` to install the package.
 
-Demo: http://typeahead.meteor.com/
-
-
-# Features
-
-* Support fetching meteor collections as typeahead dataset
-* Easy to bind auto-complete suggestions to input using `data-source` attribute
-* Allow using meteor template to visualize auto-complete suggestion
-* Support most [typeahead.js][th] use cases:
-  * Asynchronous data sources
-  * Prefetched JSON data source
-  * Multiple datasets
-* See [demo](http://typeahead.meteor.com/) application to find more functions
-
-
-## Install
-```javascript
-meteor add sergeyt:typeahead
-```
-
-## API
-
-```javascript
-/**
- * Activates typeahead behavior for given input DOM element.
- * @param element (required) The DOM element to infect.
- * @param source (optional) The custom data source.
- */
-Meteor.typeahead(element, source);
-
-/**
- * Activates all typeahead elements.
- * @param selector (optional) CSS selector to find typeahead elements to be activated.
- */
-Meteor.typeahead.inject(selector);
-```
+* [Live demo](http://typeahead.meteor.com/)
+* [Documentation](https://github.com/sergeyt/meteor-typeahead.js/blob/master/docs.md)
 
 ## Examples
+
+See [demo](https://github.com/sergeyt/meteor-typeahead.js/blob/master/demo) application in this repository to find more examples.
 
 ### data-source attribute
 
