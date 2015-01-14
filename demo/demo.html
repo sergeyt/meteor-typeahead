@@ -25,6 +25,7 @@
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
 			{{>basic}}
+			{{>open_on_focus}}
 			{{>langs}}
 			{{>prefetch}}
 			{{>multiple_datasets}}
@@ -36,11 +37,24 @@
 	</div>
 </template>
 
+<template name="open_on_focus">
+	<div>
+		<h2>Open dropdown on focus (issue #49)</h2>
+		<div class="form-group">
+			<input class="form-control typeahead" name="team" type="text"
+							placeholder="NBA teams" autocomplete="off" spellcheck="off"
+							data-source="Nba.name" data-min-length="0"/>
+		</div>
+	</div>
+</template>
+
 <template name="basic">
 	<div>
 		<h2>Using data-source attribute</h2>
 		<div class="form-group">
-			<input class="form-control typeahead" name="super.team.name" type="text" placeholder="NBA teams" autocomplete="off" spellcheck="off" data-source="nba"/>
+			<input class="form-control typeahead" name="super.team.name" type="text"
+						 	placeholder="NBA teams" autocomplete="off" spellcheck="off"
+							data-source="nba"/>
 		</div>
 		<div class="gist">
 			{{{gist 'sergeyt' '8054081'}}}

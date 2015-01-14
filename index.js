@@ -1,3 +1,7 @@
+var global = this || window;
+
+function identity(x) { return x; }
+
 // String.trim polyfill
 if (!String.prototype.trim) {
 	String.prototype.trim = function () {
@@ -16,15 +20,15 @@ Meteor.typeahead = function(element, source) {
 
 	$e.typeahead('destroy');
 
-	var opts = $e.data('options') || {};
-	if (typeof opts != 'object') {
-		opts = {};
+	var options = $e.data('options') || {};
+	if (typeof options != 'object') {
+		options = {};
 	}
 
 	// other known options passed via data attributes
 	var highlight = Boolean($e.data('highlight')) || false;
 	var hint = Boolean($e.data('hint')) || false;
-	var minLength = parseInt($e.data('min-length')) || 1;
+	var minLength = get_min_length($e);
 	var autocompleted = null, selected = null;
 
 	if ($e.data('autocompleted')) {
@@ -34,7 +38,7 @@ Meteor.typeahead = function(element, source) {
 		selected = resolve_template_function($e[0], $e.data('selected'));
 	}
 
-	var options = $.extend(opts, {
+	options = $.extend(options, {
 		highlight: highlight,
 		hint: hint,
 		minLength: minLength
@@ -44,7 +48,18 @@ Meteor.typeahead = function(element, source) {
 	if (Array.isArray(datasets)) {
 		instance = $e.typeahead.apply($e, [options].concat(datasets));
 	} else {
-		instance = $e.typeahead(options, datasets);
+		var dataset = datasets;
+
+		// TODO remove this when typeahead.js will support minLength = 0
+		if (minLength === 0) {
+			// based on @snekse suggestion (see https://github.com/twitter/typeahead.js/pull/719)
+			var altSource = dataset.source;
+			dataset.source = function(query, cb) {
+				return query ? altSource(query, cb) : cb(dataset.local());
+			};
+		}
+
+		instance = $e.typeahead(options, dataset);
 	}
 
 	// event handlers (PR #18)
@@ -59,6 +74,15 @@ Meteor.typeahead = function(element, source) {
 	// TODO support other classes if needed
 	if ($e.hasClass('form-control')) {
 		$e.parent('.twitter-typeahead').find('.tt-hint').addClass('form-control');
+	}
+
+	// TODO remove this when typeahead.js will support minLength = 0
+	if (minLength === 0) {
+		$e.on('focus', function() {
+			if ($e.val() === '') {
+				$e.data('ttTypeahead').input.trigger('queryChanged', '');
+			}
+		});
 	}
 };
 
@@ -81,7 +105,7 @@ Meteor.typeahead.inject = function(selector) {
 
 function resolve_datasets($e, source) {
 	var element = $e[0];
-	var datasets = $e.data('sets');
+	var datasets = $e.data('sources') || $e.data('sets');
 	if (datasets) {
 		if (typeof datasets == 'string') {
 			datasets = resolve_template_function(element, datasets);
@@ -99,6 +123,7 @@ function resolve_datasets($e, source) {
 	var templateName = $e.data('template'); // specifies name of custom template
 	var templates = $e.data('templates'); // specifies custom templates
 	var valueKey = $e.data('value-key') || 'value';
+	var minLength = get_min_length($e);
 
 	if (!source) {
 		source = $e.data('source') || [];
@@ -107,7 +132,8 @@ function resolve_datasets($e, source) {
 	var dataset = {
 		name: name,
 		valueKey: valueKey,
-		displayKey: valueKey
+		displayKey: valueKey,
+		minLength: minLength,
 	};
 
 	if (limit) {
@@ -137,7 +163,7 @@ function resolve_datasets($e, source) {
 			};
 			return make_bloodhound(dataset);
 		}
-		source = resolve_template_function(element, source);
+		source = resolve_data_source(element, source);
 	}
 
 	if ($.isArray(source) || ($.isFunction(source) && source.length === 0)) {
@@ -148,6 +174,11 @@ function resolve_datasets($e, source) {
 	dataset.source = source;
 
 	return dataset;
+}
+
+function get_min_length($e) {
+	var value = parseInt($e.data('min-length'));
+	return isNaN(value) || value < 0 ? 1 : value;
 }
 
 // typeahead.js throws error if dataset name does not meet /^[_a-zA-Z0-9-]+$/
@@ -176,20 +207,57 @@ function set_templates(dataset, templates) {
 	});
 }
 
+// Resolves data source function.
+function resolve_data_source(element, name) {
+	var fn = resolve_template_function(element, name);
+	if ($.isFunction(fn)) {
+		return fn;
+	}
+
+	// collection.name
+	var path = name.split('.');
+	if (path.length > 0) {
+		var collection = find_collection(path[0]);
+		if (collection) {
+			var property = path.length > 1 ? path[1] : "";
+			return function() {
+				return collection.find().fetch()
+					.map(function(it) {
+						var value = property ? it[property] : it.name || it.title;
+						// wrap to object to use object id in selected event handler
+						return value ? {value: value, id: it._id} : "";
+					})
+					.filter(identity);
+			};
+		}
+	}
+
+	console.log("Unable to resolve data source function '%s'.", name);
+	return [];
+}
+
+function find_collection(name) {
+	if (typeof Mongo != "undefined" && typeof Mongo.Collection != "undefined") {
+		// when use dburles:mongo-collection-instances
+		if ($.isFunction(Mongo.Collection.get)) {
+			return Mongo.Collection.get(name);
+		}
+	}
+	if (global) {
+		return global[name] || global[name.toLowerCase()] || null;
+	}
+	return null;
+}
+
 // Resolves function with specified name from context of given element.
 function resolve_template_function(element, name) {
 	var view = Blaze.getView(element);
 	if (!view || !view.template) {
-		return [];
+		return null;
 	}
 
 	var fn = Blaze._getTemplateHelper(view.template, name);
-	if (!$.isFunction(fn)) {
-		console.log("Unable to resolve data source function '%s'.", name);
-		return [];
-	}
-
-	return fn;
+	return $.isFunction(fn) ? fn : null;
 }
 
 // Returns HTML template function that generates HTML string using data from suggestion item.
