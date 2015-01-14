@@ -78,18 +78,34 @@ if (Meteor.isClient) {
 		handles.push(handle);
 	});
 
-	var nba = function(){
-		return Nba.find().fetch().map(function(it){ return it.name; });
+	var nba = function() {
+		return Nba.find().fetch().map(function(it){
+			return {value: it.name, id: it._id};
+		});
 	};
-	var nhl = function(){
-		return Nhl.find().fetch().map(function(it){ return it.name; });
+	var nhl = function() {
+		return Nhl.find().fetch().map(function(it) {
+			return {value: it.name, id: it._id};
+		});
 	};
 
 	// simple example
 	Template.basic.helpers({
 		nba: function(){
 			return nba();
-		}
+		},
+		opened: function(e) {
+			console.log("dropdown is opened");
+		},
+		closed: function(e) {
+			console.log("dropdown is closed");
+		},
+		selected: function(e, suggestion, dataset) {
+			console.log("selected: " + suggestion.id);
+		},
+		autocompleted: function(e, suggestion, dataset) {
+			console.log("autocompleted: " + suggestion.id);
+		},
 	});
 
 	// dataset without 'value' property
