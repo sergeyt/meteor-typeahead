@@ -29,14 +29,6 @@ Meteor.typeahead = function(element, source) {
 	var highlight = Boolean($e.data('highlight')) || false;
 	var hint = Boolean($e.data('hint')) || false;
 	var minLength = get_min_length($e);
-	var autocompleted = null, selected = null;
-
-	if ($e.data('autocompleted')) {
-		autocompleted = resolve_template_function($e[0], $e.data('autocompleted'));
-	}
-	if ($e.data('selected')) {
-		selected = resolve_template_function($e[0], $e.data('selected'));
-	}
 
 	options = $.extend(options, {
 		highlight: highlight,
@@ -62,13 +54,18 @@ Meteor.typeahead = function(element, source) {
 		instance = $e.typeahead(options, dataset);
 	}
 
-	// event handlers (PR #18)
-	if ($.isFunction(selected)) {
-		instance.on('typeahead:selected', selected);
-	}
-	if ($.isFunction(autocompleted)) {
-		instance.on('typeahead:autocompleted', autocompleted);
-	}
+	// bind event handlers
+	[
+		"opened",
+		"closed",
+		"selected",
+		"autocompleted",
+	].forEach(function(name) {
+		var fn = resolve_template_function($e[0], $e.data(name));
+		if ($.isFunction(fn)) {
+			instance.on('typeahead:' + name, fn);
+		}
+	});
 
 	// fix to apply bootstrap form-control to tt-hint
 	// TODO support other classes if needed
