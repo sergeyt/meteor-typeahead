@@ -8,7 +8,7 @@
 Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autocomplete package, wrapped for Meteor 1.0+. Issue command `meteor add sergeyt:typeahead` to install the package.
 
 * [Live demo](http://typeahead.meteor.com/)
-* [Documentation](https://github.com/sergeyt/meteor-typeahead.js/blob/master/docs.md)
+* [Documentation](https://github.com/sergeyt/meteor-typeahead/blob/master/docs.md)
 
 ## Examples
 
