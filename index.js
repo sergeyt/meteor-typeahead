@@ -81,6 +81,8 @@ Meteor.typeahead = function(element, source) {
 			}
 		});
 	}
+
+	return instance;
 };
 
 /**
