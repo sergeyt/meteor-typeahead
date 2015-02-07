@@ -25,10 +25,15 @@ Meteor.typeahead = function(element, source) {
 		options = {};
 	}
 
+	function get_bool(name, defval) {
+		var val = $e.data(name);
+		return val === undefined ? defval : !!val;
+	}
+
 	// other known options passed via data attributes
-	var highlight = Boolean($e.data('highlight')) || false;
-	var hint = Boolean($e.data('hint')) || false;
-	var autoselect = Boolean($e.data('autoselect')) || false;
+	var highlight = get_bool('highlight', false);
+	var hint = get_bool('hint', true);
+	var autoselect = get_bool('autoselect', false);
 	var minLength = get_min_length($e);
 
 	options = $.extend(options, {
