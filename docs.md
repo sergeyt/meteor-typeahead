@@ -57,6 +57,8 @@ Activates typeahead behavior for all elements matched by given CSS `selector`. `
 
 * `data-min-length` – The minimum character length needed before suggestions start getting rendered. Defaults to `1`.
 
+* `data-autoselect` – If `true`, the typeahead will select the first option when press enter key. Defaults to `false`.
+
 #### Events
 
 Using data attributes you could specify handlers for corresponding typeahead `opened`, `closed`, `selected`, `autocompleted` events. Value of data attribute is name of template helper function to be used as event handler.

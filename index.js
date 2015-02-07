@@ -28,12 +28,14 @@ Meteor.typeahead = function(element, source) {
 	// other known options passed via data attributes
 	var highlight = Boolean($e.data('highlight')) || false;
 	var hint = Boolean($e.data('hint')) || false;
+	var autoselect = Boolean($e.data('autoselect')) || false;
 	var minLength = get_min_length($e);
 
 	options = $.extend(options, {
 		highlight: highlight,
 		hint: hint,
-		minLength: minLength
+		minLength: minLength,
+		autoselect: autoselect
 	});
 
 	var instance;
