@@ -24,16 +24,17 @@
     "cinjon <cinjon.resnick@gmail.com>",
     "grigio <grigio.org@gmail.com>",
     "zhenya <eugeneas@gmail.com>",
-    "BBLN"
+    "BBLN",
+    "Daniela Meneses <daniela11290@gmail.com>"
   ],
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-cli": "~0.1",
-    "grunt-contrib-jshint": "~0.10",
-    "grunt-coffeelint": "~0.0.10",
+    "grunt-contrib-jshint": "~0.11",
+    "grunt-coffeelint": "~0.0.13",
     "grunt-npm": "~0.0.2",
-    "grunt-bump": "~0.0.14",
+    "grunt-bump": "~0.1.0",
     "grunt-auto-release": "~0.0.6"
   },
   "scripts": {
