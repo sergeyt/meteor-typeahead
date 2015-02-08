@@ -31,9 +31,11 @@ if (Meteor.isServer){
 	// fill Nba collection
 }
 
-Template.demo.nba = function(){
-	return Nba.find().fetch().map(function(it){ return it.name; });
-};
+Template.demo.helpers({
+  nba: function() {
+    return Nba.find().fetch().map(function(it){ return it.name; });
+  }
+});
 ```
 
 ### Multiple datasets
@@ -46,20 +48,22 @@ Template.demo.nba = function(){
 ```
 
 ```javascript
-Template.demo.teams = function(){
-	return [
-		{
-			name: 'nba-teams',
-			local: function() { return Nba.find().fetch().map(function(it){ return it.name; }); },
-			header: '<h3 class="league-name">NBA Teams</h3>'
-		},
-		{
-			name: 'nhl-teams',
-			local: function() { return Nhl.find().fetch().map(function(it){ return it.name; }); },
-			header: '<h3 class="league-name">NHL Teams</h3>'
-		}
-	];
-};
+Template.demo.helpers({
+  teams: function() {
+    return [
+      {
+        name: 'nba-teams',
+        local: function() { return Nba.find().fetch().map(function(it){ return it.name; }); },
+        header: '<h3 class="league-name">NBA Teams</h3>'
+      },
+      {
+        name: 'nhl-teams',
+        local: function() { return Nhl.find().fetch().map(function(it){ return it.name; }); },
+        header: '<h3 class="league-name">NHL Teams</h3>'
+      }
+    ];
+  }
+});
 ```
 
 ### Custom template to render suggestion
@@ -91,9 +95,11 @@ if (Meteor.isServer){
 }
 
 if (Meteor.isClient){
-	Template.demo.repos = function(){
-		return Repos.find().fetch();
-	};
+  Template.demo.helpers({
+    repos: function() {
+      return Repos.find().fetch();
+    }
+  });
 }
 ```
 
@@ -133,14 +139,16 @@ if (Meteor.isServer) {
 	});
 } else {
 
-	Template.demo.search = function(query, callback) {
-		Meteor.call('search', query, {}, function(err, res) {
-			if (err) {
-				console.log(err);
-				return;
-			}
-			callback(res.map(function(v){ return {value: v.name}; }));
-		});
-	};
+  Template.demo.helpers({
+    search = function(query, callback) {
+      Meteor.call('search', query, {}, function(err, res) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        callback(res.map(function(v){ return {value: v.name}; }));
+      });
+    }
+  });
 }
 ```
