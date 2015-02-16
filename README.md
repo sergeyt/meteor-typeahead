@@ -152,3 +152,19 @@ if (Meteor.isServer) {
   });
 }
 ```
+
+### Initializing the typeahead
+When the DOM is loaded through Meteor.startup on each template
+```javascript
+Meteor.startup(function() {
+  Meteor.typeahead.inject();
+});
+```
+
+#### with iron:router
+Using iron:router the Meteor.startup is already triggered because it loads the template or the loading template and then inject the data. It must be delayed to when iron:router knows it is rendered completely.
+
+```javascript
+Template.demo.rendered = function() {
+  Meteor.typeahead.inject();
+};
