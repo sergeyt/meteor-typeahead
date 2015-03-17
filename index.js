@@ -100,14 +100,28 @@ Meteor.typeahead.inject = function(selector) {
 	if (!selector) {
 		selector = '.typeahead';
 	}
-	$(selector).each(function(i,e) {
-		try {
-			Meteor.typeahead(e);
-		} catch (err) {
-			console.log(err);
-		}
-	});
+
+	// See if we have a template instance to reference
+	var template = Template.instance();
+	if (!template) {
+		// If we don't, just init on the entire DOM
+		$(selector).each(init_typeahead);
+	} else {
+		// Otherwise just init this template's typeaheads
+		template.$(selector).each(init_typeahead);
+	}
 };
+
+function init_typeahead(index, element) {
+	try {
+		if (element.data('ttTypeahead') == null) {
+			Meteor.typeahead(element);
+		}
+	} catch (err) {
+		console.log(err);
+		return;
+	}
+}
 
 function resolve_datasets($e, source) {
 	var element = $e[0];
