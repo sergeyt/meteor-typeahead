@@ -114,7 +114,7 @@ Meteor.typeahead.inject = function(selector) {
 
 function init_typeahead(index, element) {
 	try {
-		if (element.data('ttTypeahead') == null) {
+		if (!element.data('ttTypeahead')) {
 			Meteor.typeahead(element);
 		}
 	} catch (err) {
