@@ -376,7 +376,12 @@ function make_bloodhound(dataset) {
 		if ($.isFunction(dataset.local) && dataset.local.length === 0) {
 			// update data source on changing deps of local function
 			// TODO find better (functional) way to do that
-			Template.instance().autorun(function() {
+			if(Template.instance() !== null)
+				autorun_context = Template.instance();
+			else
+				autorun_context = Tracker;
+
+			autorun_context.autorun(function() {
 				engine = new Bloodhound(options);
 				engine.initialize();
 			});
