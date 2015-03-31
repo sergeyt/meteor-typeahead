@@ -59,6 +59,8 @@ Activates typeahead behavior for all elements matched by given CSS `selector`. `
 
 * `data-autoselect` – If `true`, the typeahead will select the first option when press enter key. Defaults to `false`.
 
+* `data-value-key` - If the data-source returns objects, this can be used to set which attribute to use for the search text. If this is not specified, then it is assumed that each object will have an attribute named `value` that contains the search text.
+
 #### Events
 
 Using data attributes you could specify handlers for corresponding typeahead `opened`, `closed`, `selected`, `autocompleted` events. Value of data attribute is name of template helper function to be used as event handler.

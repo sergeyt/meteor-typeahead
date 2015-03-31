@@ -97,6 +97,9 @@ if (Meteor.isServer){
 if (Meteor.isClient){
   Template.demo.helpers({
     repos: function() {
+      // this only works if returned objects have
+      // an attribute named "value" containing the text
+      // See docs for "data-value-key" attribute
       return Repos.find().fetch();
     }
   });
