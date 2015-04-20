@@ -277,7 +277,7 @@ function resolve_template_function(element, name) {
 	}
 
 	var fn = Blaze._getTemplateHelper(view.template, name);
-	return $.isFunction(fn) ? fn : null;
+	return $.isFunction(fn) ? fn.bind(view.template) : null;
 }
 
 // Returns HTML template function that generates HTML string using data from suggestion item.
@@ -377,7 +377,8 @@ function make_bloodhound(dataset) {
 			// update data source on changing deps of local function
 			// TODO find better (functional) way to do that
 			var tracker = Template.instance() || Tracker;
-			tracker.autorun(function() {
+			tracker.autorun(function(comp) {
+				// TODO stop tracking if typeahead is explicitly destroyed (issue #70)
 				engine = new Bloodhound(options);
 				engine.initialize();
 			});
