@@ -51,6 +51,8 @@ if (Meteor.isClient){
 	};
 
 	Handlebars.registerHelper('gist', function(user, id){
-		return Meteor.Gist.get(user, id);
+		// TODO fix gist helper since now it causes 'socket hang up' error
+		// return Meteor.Gist.get(user, id);
+		return '';
 	});
 }
