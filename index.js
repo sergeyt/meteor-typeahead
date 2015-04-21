@@ -277,7 +277,7 @@ function resolve_template_function(element, name) {
 	}
 
 	var fn = Blaze._getTemplateHelper(view.template, name);
-	return $.isFunction(fn) ? fn.bind(view.template) : null;
+	return $.isFunction(fn) ? Meteor.wrapAsync(fn, view._templateInstance.data) : null;
 }
 
 // Returns HTML template function that generates HTML string using data from suggestion item.
