@@ -171,3 +171,12 @@ Using iron:router the Meteor.startup is already triggered because it loads the t
 Template.demo.rendered = function() {
   Meteor.typeahead.inject();
 };
+```
+
+### Styling
+
+By default, there is no style applied with this package.
+If you want the same styling as in the demo app, please do the following:
+- add bootstrap: `meteor add twbs:bootstrap`
+- add the [style.css](https://github.com/sergeyt/meteor-typeahead/blob/master/demo/style.css) file to your application
+
