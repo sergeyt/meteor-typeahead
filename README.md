@@ -156,6 +156,37 @@ if (Meteor.isServer) {
 }
 ```
 
+### Catching selected event with id
+
+```js
+Template.example.rendered = function() {
+  Meteor.typeahead.inject();
+}
+
+Template.example.helpers({
+  items: function() {
+    // data source function
+    // TODO fetch items from meteor collection
+    return someCollections.find().fetch().map(function(object){ return {id: object._id, value: object.value}; });
+  },
+  selected: function(event, suggestion, datasetName) {
+    // event - the jQuery event object
+    // suggestion - the suggestion object
+    // datasetName - the name of the dataset the suggestion belongs to
+    // TODO your event handler here
+    console.log(suggestion.id);
+  }
+});
+```
+
+Template:
+```html
+<template name="example">
+  <input placeholder="Kies een plaats" autocomplete="off" spellcheck="off"
+      data-source="items" data-selected="selected"/>
+</template>
+```
+
 ### Initializing the typeahead
 When the DOM is loaded through Meteor.startup on each template
 ```javascript
