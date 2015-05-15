@@ -277,22 +277,28 @@ function resolve_template_function(element, name) {
 	}
 
 	var fn = Blaze._getTemplateHelper(view.template, name);
-
-	if($.isFunction(fn)) {
-		// wrap their function to setup the Template.instance() stuff
-		// define at least one arg to avoid fn being considered a local dataset
-		return function(a) {
-			var args = Array.prototype.slice.call(arguments);
-			// internal function which sets the instance before calling our function
-			Template._withTemplateInstanceFunc(
-				function() { return view.templateInstance(); },
-				function() {return fn.apply(view._templateInstance.data, args);}
-			);
-		};
+	if (!$.isFunction(fn)) {
+		return null;
 	}
 
-  // else not a function...
-	return null;
+	// calls template helper function with Template.instance() context
+	function invoke(args) {
+		// internal function which sets the instance before calling our function
+		return Template._withTemplateInstanceFunc(
+			function() { return view.templateInstance(); },
+			function() { return fn.apply(view.templateInstance(), args); }
+		);
+	}
+
+	if (fn.length === 0) { // local dataset?
+		return function() {
+			return invoke(Array.prototype.slice.call(arguments));
+		};
+	}
+	// async data source
+	return function(a) {
+		return invoke(Array.prototype.slice.call(arguments));
+	};
 }
 
 // Returns HTML template function that generates HTML string using data from suggestion item.
