@@ -1,4 +1,4 @@
-# meteor-typeahead [![Build Status](https://drone.io/github.com/sergeyt/meteor-typeahead/status.png)](https://drone.io/github.com/sergeyt/meteor-typeahead/latest) [![LICENSE](http://img.shields.io/badge/LICENSE-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) [![meteor package version](http://img.shields.io/badge/atmosphere-0.10.5_14-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
+# meteor-typeahead [![Build Status](https://drone.io/github.com/sergeyt/meteor-typeahead/status.png)](https://drone.io/github.com/sergeyt/meteor-typeahead/latest) [![LICENSE](http://img.shields.io/badge/LICENSE-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) [![meteor package version](http://img.shields.io/badge/atmosphere-0.11.1-brightgreen.svg)](https://atmospherejs.com/sergeyt/typeahead)
 
 [![Deps Status](https://david-dm.org/sergeyt/meteor-typeahead.png)](https://david-dm.org/sergeyt/meteor-typeahead)
 [![DevDeps Status](https://david-dm.org/sergeyt/meteor-typeahead/dev-status.png)](https://david-dm.org/sergeyt/meteor-typeahead#info=devDependencies)
@@ -210,4 +210,3 @@ By default, there is no style applied with this package.
 If you want the same styling as in the demo app, please do the following:
 - add bootstrap: `meteor add twbs:bootstrap`
 - add the [style.css](https://github.com/sergeyt/meteor-typeahead/blob/master/demo/style.css) file to your application
-
