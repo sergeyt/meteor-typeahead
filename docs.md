@@ -33,7 +33,7 @@ The [typeahead.js][th] plugin to make your inputs with autocomplete support pack
 Turns given HTML `<input[type="text"]/>` into a typeahead.
 
 * `element` - is HTML input element.
-* `source` - is optional custom data source function with `function(query, callback)` signature where query is `text` entered in the input and `callback` is callback function to  suggestions to show in dropdown.
+* `source` - is optional custom data source function with `function(query, sync, async)` signature where `query` is text entered in the input and `sync`, `async` are callback functions expecting `suggestions` argument to show in dropdown.
 
 #### Meteor.typeahead.inject(selector)
 
