@@ -167,7 +167,7 @@ if (Meteor.isClient) {
 
 	// example for async data-source
 	Template.async_source.helpers({
-		emails: function(query, callback) {
+		emails: function(query, sync, callback) {
 			Meteor.call('emails', function(err, res) {
 				if (err) {
 					console.log(err);
@@ -188,7 +188,7 @@ if (Meteor.isClient) {
 
 	// example for server side search
 	Template.server_side.helpers({
-		search: function(query, callback) {
+		search: function(query, sync, callback) {
 			Meteor.call('search', query, {}, function(err, res) {
 				if (err) {
 					console.log(err);
