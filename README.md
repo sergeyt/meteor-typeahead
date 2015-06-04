@@ -143,7 +143,7 @@ if (Meteor.isServer) {
 } else {
 
   Template.demo.helpers({
-    search = function(query, callback) {
+    search = function(query, sync, callback) {
       Meteor.call('search', query, {}, function(err, res) {
         if (err) {
           console.log(err);
