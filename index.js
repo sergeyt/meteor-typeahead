@@ -208,22 +208,30 @@ function normalize_dataset_name(name) {
 
 // Parses string with template names and set appropriate dataset properties.
 function set_templates(dataset, templates) {
-	var templateKeys = {header:1, footer:1, template: 1, suggestion: 1, empty: 1};
+	var templateKeys = {
+		header: 1,
+		footer: 1,
+		suggestion: 1,
+		template: 1, // suggestion alias
+		notFound: 1,
+		empty: 1, // notFound alias
+		pending: 1
+	};
 	var pairs = templates.split(/[;,]+/);
 	pairs.map(function(s) {
-		var p = s.split(/[:=]+/).map(function(it){ return it.trim(); });
+		var p = s.split(/[:=]+/).map(function(it) { return it.trim(); });
 		switch (p.length) {
 			case 1: // set suggestion template when no key is specified
-				return {key: 'template', value: p[0]};
+				return ['template', p[0]];
 			case 2:
-				return (p[0] in templateKeys) ? {key: p[0], value: p[1]} : null;
+				return (p[0] in templateKeys) ? [p[0], p[1]] : null;
 			default:
 				return null;
 		}
 	}).filter(function(p) {
-		return p !== null;
+		return p;
 	}).forEach(function(p) {
-		dataset[p.key] = p.value;
+		dataset[p[0]] = p[1];
 	});
 }
 
@@ -331,37 +339,40 @@ function make_template_function(templateName) {
 			var range = UI.renderWithData(tmpl, context);
 			UI.insert(range, div[0]);
 		}
-		return div.html();
+		// return html wrapped into div to avoid visual issues
+		return div[0].outerHTML;
 	};
 }
 
 // Creates object with template functions (for header, footer, suggestion, empty templates).
 function make_templates(dataset) {
 
-	var templates = {};
-
-	function set(key, value) {
-		if (typeof value === "string") {
-			if (value.indexOf('<') >= 0) {
-				templates[key] = value;
-			} else {
-				templates[key] = make_template_function(value);
-			}
-		} else if ($.isFunction(value)) {
-			templates[key] = value;
+	function make(value) { 
+		if (!value) {
+			return null;
 		}
+		if (typeof value === "string") {
+			if (value.indexOf('<') >= 0) { // detect HTML string
+				return value;
+			}
+			return make_template_function(value);
+		}
+		return $.isFunction(value) ? value : null;
 	}
 
-	set('header', dataset.header);
-	set('footer', dataset.footer);
-	set('suggestion', dataset.template);
-	set('empty', dataset.empty);
+	var templates = {
+		header: make(dataset.header),
+		footer: make(dataset.footer),
+		suggestion: make(dataset.suggestion || dataset.template),
+		notFound: make(dataset.notFound || dataset.empty)
+	};
 
-	if (!templates.suggestion && dataset.suggestion) {
-		set('suggestion', dataset.suggestion);
-	}
-
-	return templates;
+	return Object.keys(templates)
+		.filter(function(key) { return templates[key]; })
+		.reduce(function(result, key) {
+			result[key] = templates[key];
+			return result;
+		}, {});
 }
 
 // Returns function to map string value to plain JS object required by typeahead.
