@@ -114,7 +114,7 @@ if (Meteor.isClient) {
 	    return [
 	      {"name": "C#"},
 	      {"name": "JavaScript"},
-				{"name": "CoffeeScript"}
+	      {"name": "CoffeeScript"}
 	    ];
 	  }
 	});
