@@ -36,9 +36,7 @@
 </template>
 
 <template name="block">
-	<div>
-		{{> UI.contentBlock}}
-	</div>
+	<div>{{> UI.contentBlock}}</div>
 </template>
 
 <template name="open_on_focus">
@@ -56,9 +54,11 @@
 	{{#block}}
 		<h2>Using data-source attribute</h2>
 		<div class="form-group">
+			{{#if true}}
 			<input class="form-control typeahead" name="super.team.name" type="text"
 						 	placeholder="NBA teams" autocomplete="off" spellcheck="off"
 							data-source="nba" data-opened="opened" data-closed="closed" data-selected="selected" data-autocompleted="autocompleted"/>
+			{{/if}}
 		</div>
 		<div class="gist">
 			{{{gist 'sergeyt' '8054081'}}}

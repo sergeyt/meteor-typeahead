@@ -228,9 +228,7 @@ function set_templates(dataset, templates) {
 			default:
 				return null;
 		}
-	}).filter(function(p) {
-		return p;
-	}).forEach(function(p) {
+	}).filter(identity).forEach(function(p) {
 		dataset[p[0]] = p[1];
 	});
 }
@@ -279,23 +277,20 @@ function find_collection(name) {
 
 // Resolves function with specified name from context of given element.
 function resolve_template_function(element, name) {
+	var fn = null;
+	// traver view hierarchy and find helper function
 	var view = Blaze.getView(element);
-
-	function getHelperFromViewOrParent(view, name){
-		if (!view){
-			return null;
-		}
-		if (view.template){
-			var fn = Blaze._getTemplateHelper(view.template, name);
-			if ( $.isFunction(fn) ){
-				return fn;
+	while (view) {
+		if (view.template) {
+			fn = Blaze._getTemplateHelper(view.template, name);
+			if ($.isFunction(fn)) {
+				break;
 			}
 		}
-		return getHelperFromViewOrParent(view.parentView, name);
+		view = view.parentView;
 	}
 
-	var fn = getHelperFromViewOrParent(view, name);
-	if (!fn) {
+	if (!$.isFunction(fn)) {
 		return null;
 	}
 
