@@ -111,7 +111,11 @@ if (Meteor.isClient) {
 	// show always all suggestions (#issue #90)
 	Template.always_all_suggestions.helpers({
 		nba: function(query, sync, async) {
-			async(nba());
+			// sync(nba()); also works
+			// use setTimeout to emulate server-side search
+			setTimeout(function() {
+				async(nba());
+			}, 10);
 		}
 	});
 
