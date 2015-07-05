@@ -41,10 +41,18 @@ Template.demo.helpers({
 ### Multiple datasets
 
 ```html
-<input class="form-control typeahead" name="team" type="text"
-       placeholder="NBA and NHL teams"
-       autocomplete="off" spellcheck="off"
-       data-sets="teams"/>
+<template name="demo">
+  <div class="form-group">
+    <input class="form-control typeahead" name="team" type="text"
+           placeholder="NBA and NHL teams"
+           autocomplete="off" spellcheck="off"
+           data-sets="teams"/>
+  </div>
+</template>
+
+<template name="team">
+	<h4><i>{{name}}</i></h4>
+</template>
 ```
 
 ```javascript
@@ -53,13 +61,17 @@ Template.demo.helpers({
     return [
       {
         name: 'nba-teams',
-        local: function() { return Nba.find().fetch().map(function(it){ return it.name; }); },
-        header: '<h3 class="league-name">NBA Teams</h3>'
+        valueKey: 'name',
+        local: function() { return Nba.find().fetch(); },
+        header: '<h3 class="league-name">NBA Teams</h3>',
+        template: 'team'
       },
       {
         name: 'nhl-teams',
-        local: function() { return Nhl.find().fetch().map(function(it){ return it.name; }); },
-        header: '<h3 class="league-name">NHL Teams</h3>'
+        valueKey: 'name',
+        local: function() { return Nhl.find().fetch(); },
+        header: '<h3 class="league-name">NHL Teams</h3>',
+        template: 'team'
       }
     ];
   }

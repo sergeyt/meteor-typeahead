@@ -126,18 +126,14 @@ if (Meteor.isClient) {
 				{
 					name: 'nba-teams',
 					valueKey: 'name',
-					local: function() {
-						return Nba.find().fetch();
-					},
+					local: function() { return Nba.find().fetch(); },
 					header: '<h3 class="league-name">NBA Teams</h3>',
 					template: 'team'
 				},
 				{
 					name: 'nhl-teams',
 					valueKey: 'name',
-					local: function(){
-						return Nhl.find().fetch();
-					},
+					local: function() { return Nhl.find().fetch(); },
 					header: '<h3 class="league-name">NHL Teams</h3>',
 					template: 'team'
 				},
