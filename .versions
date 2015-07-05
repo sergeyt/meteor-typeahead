@@ -13,7 +13,7 @@ observe-sequence@1.0.6
 ordered-dict@1.0.3
 random@1.0.3
 reactive-var@1.0.5
-sergeyt:typeahead@0.11.1_2
+sergeyt:typeahead@0.11.1_3
 tracker@1.0.7
 ui@1.0.6
 underscore@1.0.3
