@@ -35,6 +35,12 @@
 	</div>
 </template>
 
+<template name="block">
+	<div>
+		{{> UI.contentBlock}}
+	</div>
+</template>
+
 <template name="open_on_focus">
 	<div>
 		<h2>Open dropdown on focus (issue #49)</h2>
@@ -47,7 +53,7 @@
 </template>
 
 <template name="basic">
-	<div>
+	{{#block}}
 		<h2>Using data-source attribute</h2>
 		<div class="form-group">
 			<input class="form-control typeahead" name="super.team.name" type="text"
@@ -60,7 +66,7 @@
 		<div class="gist">
 			{{{gist 'sergeyt' '8054591'}}}
 		</div>
-	</div>
+	{{/block}}
 </template>
 
 <template name="langs">
