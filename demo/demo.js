@@ -108,6 +108,13 @@ if (Meteor.isClient) {
 		},
 	});
 
+	// show always all suggestions (#issue #90)
+	Template.always_all_suggestions.helpers({
+		nba: function(query, sync, async) {
+			async(nba());
+		}
+	});
+
 	// dataset without 'value' property
 	Template.langs.helpers({
 	  list: function() {

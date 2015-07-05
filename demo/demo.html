@@ -24,6 +24,7 @@
 		<div class="col-md-6">
 			{{>basic}}
 			{{>open_on_focus}}
+			{{>always_all_suggestions}}
 			{{>langs}}
 			{{>prefetch}}
 			{{>multiple_datasets}}
@@ -46,6 +47,17 @@
 			<input class="form-control typeahead" name="team" type="text"
 							placeholder="NBA teams" autocomplete="off" spellcheck="off"
 							data-source="Nba.name" data-min-length="0"/>
+		</div>
+	</div>
+</template>
+
+<template name="always_all_suggestions">
+	<div>
+		<h2>Always show all results (issue #90)</h2>
+		<div class="form-group">
+			<input class="form-control typeahead" name="team" type="text"
+							placeholder="NBA teams" autocomplete="off" spellcheck="off"
+							data-source="nba" data-min-length="0"/>
 		</div>
 	</div>
 </template>

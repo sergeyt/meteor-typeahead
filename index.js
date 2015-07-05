@@ -50,11 +50,11 @@ Meteor.typeahead = function(element, source) {
 		var dataset = datasets;
 
 		// TODO remove this when typeahead.js will support minLength = 0
-		if (minLength === 0) {
+		if (minLength === 0 && dataset.local) {
 			// based on @snekse suggestion (see https://github.com/twitter/typeahead.js/pull/719)
 			var altSource = dataset.source;
-			dataset.source = function(query, cb) {
-				return query ? altSource(query, cb) : cb(dataset.local());
+			dataset.source = function(query, sync, async) {
+				return query ? altSource(query, sync, async) : sync(dataset.local());
 			};
 		}
 
@@ -342,7 +342,7 @@ function make_template_function(templateName) {
 // Creates object with template functions (for header, footer, suggestion, empty templates).
 function make_templates(dataset) {
 
-	function make(value) { 
+	function make(value) {
 		if (!value) {
 			return null;
 		}
