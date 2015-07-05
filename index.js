@@ -276,8 +276,21 @@ function resolve_template_function(element, name) {
 		return null;
 	}
 
-	var fn = Blaze._getTemplateHelper(view.template, name);
-	if (!$.isFunction(fn)) {
+	function getHelperFromViewOrParent(view, name){
+		if (!view){
+			return null;
+		}
+		if (view.template){
+			var fn = Blaze._getTemplateHelper(view.template, name);
+			if ( $.isFunction(fn) ){
+				return fn;
+			}
+		}
+		return getHelperFromViewOrParent(view.parentView, name);
+	};
+
+	var fn = getHelperFromViewOrParent(view, name);
+	if (!fn) {
 		return null;
 	}
 
