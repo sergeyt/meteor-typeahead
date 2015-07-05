@@ -272,9 +272,6 @@ function find_collection(name) {
 // Resolves function with specified name from context of given element.
 function resolve_template_function(element, name) {
 	var view = Blaze.getView(element);
-	if (!view || !view.template) {
-		return null;
-	}
 
 	function getHelperFromViewOrParent(view, name){
 		if (!view){
@@ -287,7 +284,7 @@ function resolve_template_function(element, name) {
 			}
 		}
 		return getHelperFromViewOrParent(view.parentView, name);
-	};
+	}
 
 	var fn = getHelperFromViewOrParent(view, name);
 	if (!fn) {
