@@ -9,6 +9,20 @@ if (!String.prototype.trim) {
 	};
 }
 
+var typeaheadEvents = [
+	"active",
+	"idle",
+	"open",
+	"close",
+	"change",
+	"render",
+	"select",
+	"autocomplete",
+	"asyncrequest",
+	"asynccancel",
+	"asyncreceive",
+];
+
 /**
  * Activates typeahead behavior for given element.
  * @param element (required) The DOM element to infect.
@@ -62,12 +76,7 @@ Meteor.typeahead = function(element, source) {
 	}
 
 	// bind event handlers
-	[
-		"opened",
-		"closed",
-		"selected",
-		"autocompleted",
-	].forEach(function(name) {
+	typeaheadEvents.forEach(function(name) {
 		var fn = resolve_template_function($e[0], $e.data(name));
 		if ($.isFunction(fn)) {
 			instance.on('typeahead:' + name, fn);
