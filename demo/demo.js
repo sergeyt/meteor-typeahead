@@ -94,16 +94,16 @@ if (Meteor.isClient) {
 		nba: function(){
 			return nba();
 		},
-		opened: function(e) {
+		open: function(e) {
 			console.log("dropdown is opened");
 		},
-		closed: function(e) {
+		close: function(e) {
 			console.log("dropdown is closed");
 		},
-		selected: function(e, suggestion, dataset) {
+		select: function(e, suggestion, dataset) {
 			console.log("selected: " + suggestion.id);
 		},
-		autocompleted: function(e, suggestion, dataset) {
+		autocomplete: function(e, suggestion, dataset) {
 			console.log("autocompleted: " + suggestion.id);
 		},
 	});
