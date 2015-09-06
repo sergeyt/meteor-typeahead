@@ -68,6 +68,6 @@ Using data attributes you could specify handlers for corresponding typeahead `op
 * `data-opened` - specifies handler for for `typeahead:opened` event
 * `data-closed` - specifies handler for for `typeahead:closed` event
 * `data-selected` - specifies handler for for `typeahead:selected` event
-* `data-autocompleted` - specifies handler for for `typeahead:autocompleted` event
+* `data-autocomplete` - specifies handler for for `typeahead:autocomplete` event
 
 See also [typeahead docs](https://github.com/twitter/typeahead.js/blob/master/doc/jquery_typeahead.md#custom-events) for custom events.
