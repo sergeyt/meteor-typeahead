@@ -108,6 +108,17 @@ if (Meteor.isClient) {
 		},
 	});
 
+	// example usage of typeahead API (issue #106)
+	Template.basic.events({
+		'click #btn_open': function() {
+			$('#nba_teams').typeahead('val', 'a');
+			$('#nba_teams').typeahead('open');
+		},
+		'click #btn_close': function() {
+			$('#nba_teams').typeahead('close');
+		},
+	});
+
 	// show always all suggestions (#issue #90)
 	Template.always_all_suggestions.helpers({
 		nba: function(query, sync, async) {

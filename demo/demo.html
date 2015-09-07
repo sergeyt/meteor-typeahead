@@ -67,9 +67,11 @@
 		<h2>Using data-source attribute</h2>
 		<div class="form-group">
 			{{#if true}}
-			<input class="form-control typeahead" name="super.team.name" type="text"
+			<input id="nba_teams" class="form-control typeahead" name="super.team.name" type="text"
 						 	placeholder="NBA teams" autocomplete="off" spellcheck="off"
 							data-source="nba" data-open="open" data-close="close" data-select="select" data-autocomplete="autocomplete"/>
+			<button id="btn_open">Open</button>
+			<button id="btn_close">Close</button>
 			{{/if}}
 		</div>
 		<div class="gist">
