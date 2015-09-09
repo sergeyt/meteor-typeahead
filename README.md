@@ -195,7 +195,7 @@ Template:
 ```html
 <template name="example">
   <input placeholder="Kies een plaats" autocomplete="off" spellcheck="off"
-      data-source="items" data-selected="selected"/>
+      data-source="items" data-select="selected"/>
 </template>
 ```
 
