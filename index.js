@@ -287,14 +287,13 @@ function find_collection(name) {
 // Resolves function with specified name from context of given element.
 function resolve_template_function(element, name) {
 	var fn = null;
-	// traver view hierarchy and find helper function
+	var opts = {sync:false};
+	// traverse view hierarchy and find helper function
 	var view = Blaze.getView(element);
 	while (view) {
-		if (view.template) {
-			fn = Blaze._getTemplateHelper(view.template, name);
-			if ($.isFunction(fn)) {
-				break;
-			}
+		fn = resolve_helper(view, name, opts);
+		if ($.isFunction(fn)) {
+			break;
 		}
 		view = view.parentView;
 	}
@@ -305,14 +304,15 @@ function resolve_template_function(element, name) {
 
 	// calls template helper function with Template.instance() context
 	function invoke(args) {
-		// internal function which sets the instance before calling our function
-		return Template._withTemplateInstanceFunc(
-			function() { return view.templateInstance(); },
-			function() { return fn.apply(view.templateInstance(), args); }
-		);
+		// use Blaze._withCurrentView internal function to set current view
+		// also since meteor 1.2 no need to use Template._withTemplateInstanceFunc
+		// since the function is already bound to template instance
+		return Blaze._withCurrentView(view, function() {
+			return fn.apply(null, args);
+		});
 	}
 
-	if (fn.length === 0) { // local dataset?
+	if (opts.sync) { // local dataset?
 		return function() {
 			return invoke(Array.prototype.slice.call(arguments));
 		};
@@ -321,6 +321,24 @@ function resolve_template_function(element, name) {
 	return function(a) {
 		return invoke(Array.prototype.slice.call(arguments));
 	};
+}
+
+function resolve_helper(view, name, opts) {
+	if (!view.template) {
+		return null;
+	}
+	// we need to known whether the helper function is async
+	// use view.template.__helpers to determine that
+	// since meteor 1.2 Blaze._getTemplateHelper wraps
+	// the helper function binding it to template context
+	var fn = view.template.__helpers.get(name);
+	if (!$.isFunction(fn)) {
+		return null;
+	}
+	opts.sync = fn.length === 0;
+	return Blaze._getTemplateHelper(view.template, name, function() {
+		return view.templateInstance();
+	});
 }
 
 // Returns HTML template function that generates HTML string using data from suggestion item.
