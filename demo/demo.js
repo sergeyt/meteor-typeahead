@@ -43,31 +43,31 @@ if (Meteor.isServer) {
 		// Create an index on the name field of BigCollection
 		BigCollection._ensureIndex({name: 1});
 	});
-
-	Meteor.methods({
-		emails: function() {
-			return [
-				'stodyshev@gmail.com'
-			];
-		},
-		search: function(query, options) {
-			if (!query) return [];
-
-			options = options || {};
-
-			// guard against client-side DOS: hard limit to 50
-			if (options.limit) {
-				options.limit = Math.min(50, Math.abs(options.limit));
-			} else {
-				options.limit = 50;
-			}
-
-			// TODO fix regexp to support multiple tokens
-			var regex = new RegExp("^" + query);
-			return BigCollection.find({name: {$regex:  regex}}, options).fetch();
-		}
-	});
 }
+
+Meteor.methods({
+	emails: function() {
+		return [
+			'stodyshev@gmail.com'
+		];
+	},
+	search: function(query, options) {
+		if (!query) return [];
+
+		options = options || {};
+
+		// guard against client-side DOS: hard limit to 50
+		if (options.limit) {
+			options.limit = Math.min(50, Math.abs(options.limit));
+		} else {
+			options.limit = 50;
+		}
+
+		// TODO fix regexp to support multiple tokens
+		var regex = new RegExp("^" + query);
+		return BigCollection.find({name: {$regex:  regex}}, options).fetch();
+	}
+});
 
 if (Meteor.isClient) {
 
