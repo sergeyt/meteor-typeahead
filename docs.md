@@ -66,7 +66,7 @@ Activates typeahead behavior for all elements matched by given CSS `selector`. `
 Using data attributes you could specify handlers for corresponding typeahead `opened`, `closed`, `selected`, `autocompleted` events. Value of data attribute is name of template helper function to be used as event handler.
 
 * `data-open` - specifies handler for for `typeahead:open` event
-* `data-clos` - specifies handler for for `typeahead:clos` event
+* `data-close` - specifies handler for for `typeahead:close` event
 * `data-select` - specifies handler for for `typeahead:select` event
 * `data-autocomplete` - specifies handler for for `typeahead:autocomplete` event
 
