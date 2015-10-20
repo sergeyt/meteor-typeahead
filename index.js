@@ -147,7 +147,7 @@ function resolve_datasets($e, source) {
 		});
 	}
 
-	var name = normalize_dataset_name($e.attr('name') || $e.attr('id') || 'dataset');
+	var name = normalize_dataset_name($e.attr('data-source-name') || $e.attr('name') || $e.attr('id') || 'dataset');
 	var limit = $e.data('limit');
 	var templateName = $e.data('template'); // specifies name of custom template
 	var templates = $e.data('templates'); // specifies custom templates
@@ -212,7 +212,7 @@ function get_min_length($e) {
 
 // typeahead.js throws error if dataset name does not meet /^[_a-zA-Z0-9-]+$/
 function normalize_dataset_name(name) {
-	return name.replace(/\./g, '_');
+	return name.replace(/[\]\[\.]/g, '_');
 }
 
 // Parses string with template names and set appropriate dataset properties.
