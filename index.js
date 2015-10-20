@@ -147,7 +147,7 @@ function resolve_datasets($e, source) {
 		});
 	}
 
-	var name = $e.attr('data-source-name') || normalize_dataset_name($e.attr('name') || $e.attr('id') || 'dataset');
+	var name = normalize_dataset_name($e.attr('data-source-name') || $e.attr('name') || $e.attr('id') || 'dataset');
 	var limit = $e.data('limit');
 	var templateName = $e.data('template'); // specifies name of custom template
 	var templates = $e.data('templates'); // specifies custom templates
