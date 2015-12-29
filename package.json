@@ -34,7 +34,7 @@
     "grunt-contrib-jshint": "~0.11",
     "grunt-coffeelint": "~0.0.13",
     "grunt-npm": "~0.0.2",
-    "grunt-bump": "~0.6.0",
+    "grunt-bump": "~0.7.0",
     "grunt-auto-release": "~0.0.6"
   },
   "scripts": {
