@@ -89,11 +89,13 @@ if (Meteor.isClient) {
 		});
 	};
 
-	// simple example
+	// basic example
+
+	// check old-style helpers
+	Template.basic.nba = nba;
+
 	Template.basic.helpers({
-		nba: function(){
-			return nba();
-		},
+		// nba: nba,
 		open: function(e) {
 			console.log("dropdown is opened");
 		},

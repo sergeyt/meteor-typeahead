@@ -331,7 +331,7 @@ function resolve_helper(view, name, opts) {
 	// use view.template.__helpers to determine that
 	// since meteor 1.2 Blaze._getTemplateHelper wraps
 	// the helper function binding it to template context
-	var fn = view.template.__helpers.get(name);
+	var fn = view.template.__helpers.get(name) || view.template[name];
 	if (!$.isFunction(fn)) {
 		return null;
 	}
