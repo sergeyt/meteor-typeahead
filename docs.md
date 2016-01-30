@@ -45,7 +45,7 @@ Activates typeahead behavior for all elements matched by given CSS `selector`. `
 
 * `data-source` - name of function defined as helper for your meteor template with typeahead input. Optionally you could specify `collection.property` to automatically bind given meteor collection to your typeahead input
 
-* `data-sources` - name of tempalte helper function that returns array of typeahead datasets. `data-sets` is alias. Demo application has an example.
+* `data-sources` - name of template helper function that returns array of typeahead datasets. `data-sets` is alias. Demo application has an example.
 
 ### Options
 
