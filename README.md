@@ -10,6 +10,23 @@ Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/examples/) autoco
 * [Live demo](http://typeahead.meteor.com/)
 * [Documentation](https://github.com/sergeyt/meteor-typeahead/blob/master/docs.md)
 
+## Initializing typeahead
+When the DOM is loaded through Meteor.startup on each template
+```javascript
+Meteor.startup(function() {
+  Meteor.typeahead.inject();
+});
+```
+
+#### with iron:router
+Using iron:router the Meteor.startup is already triggered because it loads the template or the loading template and then inject the data. It must be delayed to when iron:router knows it is rendered completely.
+
+```javascript
+Template.demo.rendered = function() {
+  Meteor.typeahead.inject();
+};
+```
+
 ## Examples
 
 See [demo](https://github.com/sergeyt/meteor-typeahead/tree/master/demo) application in this repository to find more examples.
@@ -197,23 +214,6 @@ Template:
   <input placeholder="Kies een plaats" autocomplete="off" spellcheck="off"
       data-source="items" data-select="selected"/>
 </template>
-```
-
-### Initializing the typeahead
-When the DOM is loaded through Meteor.startup on each template
-```javascript
-Meteor.startup(function() {
-  Meteor.typeahead.inject();
-});
-```
-
-#### with iron:router
-Using iron:router the Meteor.startup is already triggered because it loads the template or the loading template and then inject the data. It must be delayed to when iron:router knows it is rendered completely.
-
-```javascript
-Template.demo.rendered = function() {
-  Meteor.typeahead.inject();
-};
 ```
 
 ### Styling
