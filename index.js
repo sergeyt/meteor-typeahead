@@ -386,7 +386,8 @@ function make_templates(dataset) {
 		header: make(dataset.header),
 		footer: make(dataset.footer),
 		suggestion: make(dataset.suggestion || dataset.template),
-		notFound: make(dataset.notFound || dataset.empty)
+		notFound: make(dataset.notFound || dataset.empty),
+		pending: make(dataset.pending || dataset.pending)
 	};
 
 	return Object.keys(templates)
