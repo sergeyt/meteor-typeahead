@@ -182,6 +182,7 @@ function resolve_datasets($e, source) {
 	dataset.templates = make_templates(dataset);
 
 	if (typeof source === 'string') {
+		dataset.async = true;
 		if (source.indexOf('/') >= 0) { // support prefetch urls
 			isprefetch = true;
 			dataset.prefetch = {
