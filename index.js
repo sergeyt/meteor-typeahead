@@ -430,6 +430,11 @@ function make_bloodhound(dataset) {
 	var engine;
 
 	if (need_bloodhound) {
+		// Supports multiple fields passed, deliniated by spaces
+		if (dataset.valueKey.indexOf(" ") !== -1) {
+			dataset.valueKey = dataset.valueKey.split(" ");
+		};
+
 		var options = $.extend({}, dataset, {
 			// TODO support custom tokenizers
 			datumTokenizer: Bloodhound.tokenizers.obj.whitespace(dataset.valueKey),
