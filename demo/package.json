@@ -1,0 +1,21 @@
+{
+  "name": "meteor-typeahead-demo",
+  "version": "0.11.1",
+  "description": "Demo app of autocomplete package for meteor powered by twitter typeahead.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sergeyt/meteor-typeahead.git"
+  },
+  "keywords": [
+    "meteor",
+    "typeahead",
+    "autocomplete"
+  ],
+  "author": "Sergey Todyshev <stodyshev@gmail.com>",
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.49"
+  },
+  "devDependencies": {},
+  "scripts": {}
+}
