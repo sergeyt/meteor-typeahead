@@ -29,13 +29,13 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "coffeelint": "^1.15.0",
-    "grunt": "^0.4.5",
-    "grunt-auto-release": "^0.0.6",
-    "grunt-bump": "^0.7.0",
+    "coffeelint": "^2.1.0",
+    "grunt": "^1.0.2",
+    "grunt-auto-release": "^0.0.7",
+    "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
-    "grunt-coffeelint": "^0.0.15",
-    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-coffeelint": "^0.0.16",
+    "grunt-contrib-jshint": "^1.1.0",
     "grunt-npm": "^0.0.2"
   },
   "scripts": {
