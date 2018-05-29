@@ -49,3 +49,4 @@ module.exports = (grunt) ->
 	grunt.registerTask 'lint', ['coffeelint', 'jshint']
 	grunt.registerTask 'test', ['lint']
 	grunt.registerTask 'default', ['test']
+	grunt.registerTask 'contrib', ['npm-contributors']
