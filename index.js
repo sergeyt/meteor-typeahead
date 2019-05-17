@@ -152,6 +152,7 @@ function resolve_datasets($e, source) {
 	var templateName = $e.data('template'); // specifies name of custom template
 	var templates = $e.data('templates'); // specifies custom templates
 	var valueKey = $e.data('value-key') || 'value';
+	var displayKey = $e.data('display-key') || valueKey;
 	var minLength = get_min_length($e);
 
 	if (!source) {
@@ -161,7 +162,7 @@ function resolve_datasets($e, source) {
 	var dataset = {
 		name: name,
 		valueKey: valueKey,
-		displayKey: valueKey,
+		displayKey: displayKey,
 		minLength: minLength,
 	};
 
@@ -430,6 +431,16 @@ function make_bloodhound(dataset) {
 	var engine;
 
 	if (need_bloodhound) {
+		// Here we parse the keys?
+		// if (valueKey.indexOf(" ") !== -1) {
+		// 	dataset.valueKey = dataset.valueKey.split(" ");
+		// };
+		// Supports multiple valuekeys, deliniated by commas
+		if (dataset.valueKey.indexOf(",") !== -1) {
+			dataset.valueKey = dataset.valueKey.replace(/\s+/g, '').split(",");
+		};
+
+
 		var options = $.extend({}, dataset, {
 			// TODO support custom tokenizers
 			datumTokenizer: Bloodhound.tokenizers.obj.whitespace(dataset.valueKey),
