@@ -7,8 +7,8 @@ Package.describe({
 
 Package.onUse(function(api) {
 	api.versionsFrom(['2.8.1', '3.0']);
-	api.use(['jquery', 'blaze'], 'client');
-	api.use('twbs:bootstrap', 'client', {weak: true});
+	api.use(['jquery@3.0.1', 'blaze@3.0.0'], 'client');
+	api.use('twbs:bootstrap@3.3.6', 'client', {weak: true});
 	api.addFiles('typeahead.bundle.js', 'client');
 	api.addFiles('index.js', 'client');
 });
